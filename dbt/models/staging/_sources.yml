@@ -1,0 +1,11 @@
+version: 2
+
+sources:
+  - name: raw
+    database: "{{ env_var('DBT_DATABASE') }}"
+    schema: raw
+    tables:
+      - name: ingestion_batches
+      - name: carrier_claims
+      - name: carrier_claim_lines
+      - name: rejected_records
