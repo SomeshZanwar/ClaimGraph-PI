@@ -62,62 +62,103 @@ It will not autonomously deny claims, make clinical decisions, claim regulatory 
 - design.md
 - memory.md
 
-### Pending Application/Repository Foundation
+## Phase Status
 
-- README.md
-- LICENSE
+### Phase 0: Product and Engineering Specification
+
+Status: COMPLETE
+
+Completed:
+
+- PRD
+- architecture
+- engineering rules
+- implementation phases
+- design system
+- project memory
+
+### Phase 1: Repository Foundation and Local Environment
+
+Status: COMPLETE
+
+Completed:
+
+- README foundation
+- Apache-2.0 license
 - .gitignore
 - .env.example
-- docker-compose.yml
-- backend project scaffold
-- frontend project scaffold
-- CI workflows
+- FastAPI backend scaffold
+- typed runtime configuration
+- backend health endpoints
+- backend pytest harness
+- React + TypeScript + Vite frontend scaffold
+- IBM Plex typography foundation
+- responsive application shell
+- mobile navigation
+- custom 404 route
+- route-specific page titles
+- favicon
+- valid empty-state copy
+- Dockerfiles
+- SPA Nginx routing
+- Docker Compose with PostgreSQL, Neo4j, Redis, Mailpit, backend, and frontend
+- frontend unit-test harness
+- ESLint configuration
+- GitHub Actions baseline CI
+- local setup documentation
+- current frontend dependency refresh
+- CI validated successfully after TypeScript configuration fix
+
+Open Phase 1 follow-up:
+
+- generate and commit a frontend lockfile after final dependency resolution can be materialized locally
+
+This follow-up does not block Phase 2 because CI resolves and validates the dependency set, but it remains a repository reproducibility improvement required before final release.
 
 ## Current Phase
 
-Phase 0: Product and Engineering Specification
+Phase 2: Data Source, Canonical Model, and Ingestion
 
-Status: COMPLETE after this file is committed.
+Status: NOT STARTED
 
-## Next Phase
+## Next Work
 
-Phase 1: Repository Foundation and Local Environment
-
-Immediate next work:
-
-1. choose license
-2. create root repository hygiene files
-3. scaffold backend
-4. scaffold frontend
-5. add Docker services
-6. add baseline tests
-7. add baseline GitHub Actions CI
-8. document local setup
+1. select the supported public/synthetic claims source
+2. document source provenance and limitations
+3. define ingestion batch contract
+4. define canonical identifiers
+5. create PostgreSQL raw schema and initial migration
+6. implement schema validation
+7. implement accepted/quarantined record flow
+8. implement ingestion CLI
+9. add ingestion tests
+10. update README and memory
 
 ## Current File Being Worked On
 
 memory.md
 
-## Files Not Yet Worked On
+## Files/Areas Not Yet Worked On
 
-Application implementation files have not been created yet.
-
-The following planned areas remain untouched:
-
-- backend/
-- frontend/
-- data/
-- pipelines/
-- dbt/
-- risk_engine/
-- ml/
-- graph/
-- infra/
-- scripts/
-- docs/decisions/
-- docs/security/
-- docs/runbooks/
-- .github/workflows/
+- data source implementation
+- backend database models
+- Alembic migrations
+- pipelines/ingest
+- pipelines/validation
+- dbt project
+- risk_engine
+- ml
+- graph projection
+- investigator case APIs
+- authentication flows
+- provider APIs
+- investigator UI
+- legal pages
+- support/bug-report pages
+- analytics tracking
+- SEO launch files
+- observability implementation
+- deployment
 
 ## Important Engineering Decisions So Far
 
@@ -175,7 +216,7 @@ Out of scope.
 
 ### Public UI
 
-Must be fully responsive and follow the project-wide design/SEO/security requirements.
+Must be fully responsive and follow the project-wide design, SEO, accessibility, legal, and security requirements.
 
 ## Non-Negotiable UI Rules
 
@@ -253,35 +294,10 @@ Development should proceed incrementally with meaningful commits.
 
 No false authorship claims should be added.
 
-## Completion Tracking
-
-### Phase 0
-
-- [x] PRD
-- [x] architecture
-- [x] engineering rules
-- [x] phase plan
-- [x] design system
-- [x] project memory
-
-### Phase 1
-
-- [ ] root repo files
-- [ ] backend scaffold
-- [ ] frontend scaffold
-- [ ] Docker
-- [ ] test harness
-- [ ] baseline CI
-- [ ] local setup documentation
-
-### Phase 2+
-
-Not started.
-
 ## Last Updated
 
 2026-10-04
 
 ## Next Action
 
-Begin Phase 1 only after verifying all six governing documents are committed and internally consistent.
+Begin Phase 2 by selecting and documenting the claims dataset, then implement the raw ingestion contract and database schema.
