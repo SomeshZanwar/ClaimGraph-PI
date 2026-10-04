@@ -119,7 +119,7 @@ This follow-up does not block Phase 2 because CI resolves and validates the depe
 
 Phase 2: Data Source, Canonical Model, and Ingestion
 
-Status: IN PROGRESS
+Status: COMPLETE
 
 ## Next Work
 
@@ -137,18 +137,19 @@ Completed in Phase 2 so far:
 - ingestion CLI implemented
 - parser and ZIP-streaming tests added
 
-Next:
+Completed validation:
 
-1. validate the migration and ingestion code in CI
-2. add PostgreSQL integration coverage
-3. add a small repository-safe fixture that mirrors the CMS schema
-4. run the first end-to-end ingestion test
-5. document ingestion commands and expected metrics
-6. mark Phase 2 complete before starting dbt models
+- PostgreSQL service runs in CI
+- Alembic migration is applied in CI
+- repository-safe CMS-shaped fixture added
+- end-to-end database ingestion test added
+- malformed row quarantine verified
+- latest Phase 2 CI is green
+- ingestion commands and expected metrics documented in README
 
 ## Current File Being Worked On
 
-Phase 2 ingestion validation and CI hardening
+dbt analytical model foundation
 
 ## Files/Areas Not Yet Worked On
 
@@ -312,4 +313,4 @@ No false authorship claims should be added.
 
 ## Next Action
 
-Finish Phase 2 validation by running the migration and ingestion path against PostgreSQL in CI, then add a small safe fixture and end-to-end ingestion test.
+Build the dbt source, staging, intermediate, fact/dimension, and provider peer models with data-quality tests, then validate them against the PostgreSQL fixture in CI.
