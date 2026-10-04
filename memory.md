@@ -149,7 +149,7 @@ Completed validation:
 
 ## Current File Being Worked On
 
-claim anomaly feature mart and unsupervised model pipeline
+structured evidence composer and transparent case-priority engine
 
 ## Files/Areas Not Yet Worked On
 
@@ -392,6 +392,29 @@ Implemented and validated:
 
 Current dataset limitation: Carrier claims do not provide reliable facility/address entities for this synthetic graph, so those node types are not fabricated.
 
+## Phase 7 Completion
+
+Phase 7 is COMPLETE.
+
+Implemented and validated:
+
+- canonical claim ML feature mart
+- versioned Isolation Forest anomaly model
+- source snapshot hash
+- explicit feature schema
+- production minimum training-row guard
+- fixture-only small-data override for CI
+- deterministic random seed
+- persisted model-run metadata
+- persisted claim anomaly scores
+- anomaly threshold
+- descriptive feature-deviation context
+- MLflow experiment tracking using SQLite-backed tracking
+- local model artifact persistence
+- unit tests for reproducibility and explanation labeling
+- end-to-end model training/scoring verification in CI
+- no fabricated fraud labels or supervised accuracy claims
+
 ## Next Action
 
-Build a versioned unsupervised claim-anomaly pipeline using canonical claim features, MLflow tracking, persistent scores, explicit feature-deviation context, and no fabricated fraud labels.
+Compose rule, ML, provider-peer, graph, financial, and lineage evidence per claim; calculate a transparent investigation-priority score; create/update investigation cases; and verify evidence preservation in CI.
