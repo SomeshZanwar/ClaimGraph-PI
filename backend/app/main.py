@@ -6,6 +6,11 @@ import uuid
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 
+from app.api.audit import router as audit_router
+from app.api.cases import router as cases_router
+from app.api.graph import router as graph_router
+from app.api.providers import router as providers_router
+from app.api.search import router as search_router
 from app.auth.routes import router as auth_router
 from app.config import get_settings
 
@@ -47,6 +52,11 @@ async def request_context(request: Request, call_next):
 
 
 app.include_router(auth_router)
+app.include_router(cases_router)
+app.include_router(providers_router)
+app.include_router(graph_router)
+app.include_router(search_router)
+app.include_router(audit_router)
 
 
 @app.get("/health", tags=["system"])
