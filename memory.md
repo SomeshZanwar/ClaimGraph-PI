@@ -149,7 +149,7 @@ Completed validation:
 
 ## Current File Being Worked On
 
-structured evidence composer and transparent case-priority engine
+secure user, session, verification, reset, rate-limit, and authorization layer
 
 ## Files/Areas Not Yet Worked On
 
@@ -415,6 +415,27 @@ Implemented and validated:
 - end-to-end model training/scoring verification in CI
 - no fabricated fraud labels or supervised accuracy claims
 
+## Phase 8 Completion
+
+Phase 8 is COMPLETE.
+
+Implemented and validated:
+
+- investigation case table
+- immutable evidence-version table keyed by evidence hash
+- rule-signal to claim mapping
+- latest model signal composition
+- provider peer evidence
+- provider network evidence
+- financial exposure
+- source-file lineage
+- transparent priority components
+- queue priority bands
+- explicit statement that priority is not a fraud probability
+- idempotent evidence-version handling
+- unit tests for scoring and evidence hashing
+- case composition and evidence verification in CI
+
 ## Next Action
 
-Compose rule, ML, provider-peer, graph, financial, and lineage evidence per claim; calculate a transparent investigation-priority score; create/update investigation cases; and verify evidence preservation in CI.
+Implement secure users, roles, Argon2id passwords, opaque expiring sessions, email verification, password reset, Redis-backed abuse protection, CSRF checks, audit events, and case assignment authorization.
