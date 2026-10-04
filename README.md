@@ -17,7 +17,7 @@ The repository contains the governing specifications:
 - [design.md](design.md)
 - [memory.md](memory.md)
 
-The initial backend, frontend, container, test, and CI scaffolds are now present. Claims data and risk logic have not been implemented yet.
+The foundation and CMS DE-SynPUF Carrier Claims ingestion path are implemented and validated in CI. The dbt analytical layer is the current phase.
 
 ## Product Boundary
 
@@ -116,7 +116,37 @@ npm run test
 npm run build
 ~~~
 
-A committed lockfile will be added after dependency resolution is validated.
+A committed lockfile will be added after dependency resolution is materialized locally.
+
+## CMS DE-SynPUF Carrier Claims Ingestion
+
+The initial data pipeline targets CMS DE-SynPUF Sample 2 Carrier Claims. The source files are synthetic and are not committed to this repository.
+
+See [data/README.md](data/README.md) for source URLs, limitations, and data-use notes.
+
+After downloading a Carrier Claims ZIP into `data/raw/sample_2/`, apply the database migration:
+
+~~~bash
+alembic -c backend/alembic.ini upgrade head
+~~~
+
+Then ingest one source archive:
+
+~~~bash
+python -m app.ingestion.cli data/raw/sample_2/DE1_0_2008_to_2010_Carrier_Claims_Sample_2A.zip
+~~~
+
+The ingestion command reports:
+
+- rows seen
+- rows accepted
+- rows rejected
+- normalized claim lines loaded
+- final batch status
+
+Malformed rows are preserved in `raw.rejected_records` with structured reason codes instead of being silently dropped.
+
+The CI workflow also runs an end-to-end ingestion test against PostgreSQL using a small repository-safe fixture that mirrors the CMS Carrier schema.
 
 ## Repository Standards
 
