@@ -1,9 +1,8 @@
 import time
 
+from app.config import get_settings
 from neo4j import GraphDatabase
 from neo4j.exceptions import ServiceUnavailable
-
-from app.config import get_settings
 
 
 def main() -> None:
