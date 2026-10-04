@@ -2,7 +2,6 @@ from collections.abc import Iterable
 from dataclasses import dataclass
 from decimal import Decimal
 
-
 SEVERITY_WEIGHTS = {
     "LOW": 5,
     "MEDIUM": 12,
