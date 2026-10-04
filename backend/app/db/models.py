@@ -285,3 +285,74 @@ class ProviderGraphMetric(Base):
     evaluated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
 
     run: Mapped[GraphRun] = relationship(back_populates="provider_metrics")
+
+
+class ModelRun(Base):
+    __tablename__ = "model_runs"
+    __table_args__ = (
+        UniqueConstraint("model_version", name="uq_ml_model_version"),
+        Index("ix_ml_model_run_status", "status"),
+        {"schema": "ml_meta"},
+    )
+
+    id: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True),
+        primary_key=True,
+        default=uuid.uuid4,
+    )
+    model_version: Mapped[str] = mapped_column(String(96), nullable=False)
+    model_type: Mapped[str] = mapped_column(String(64), nullable=False)
+    source_snapshot_hash: Mapped[str] = mapped_column(String(64), nullable=False)
+    status: Mapped[str] = mapped_column(String(32), nullable=False, default="STARTED")
+    trained_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
+    completed_at: Mapped[datetime | None] = mapped_column(
+        DateTime(timezone=True),
+        nullable=True,
+    )
+    training_row_count: Mapped[int] = mapped_column(BigInteger, nullable=False)
+    contamination: Mapped[Decimal] = mapped_column(Numeric(8, 6), nullable=False)
+    anomaly_threshold: Mapped[Decimal | None] = mapped_column(Numeric(18, 8), nullable=True)
+    feature_names: Mapped[list[str]] = mapped_column(JSONB, nullable=False)
+    metrics: Mapped[dict[str, object]] = mapped_column(JSONB, nullable=False)
+    artifact_path: Mapped[str | None] = mapped_column(String(512), nullable=True)
+    error_message: Mapped[str | None] = mapped_column(Text, nullable=True)
+
+    scores: Mapped[list[ClaimModelScore]] = relationship(
+        back_populates="run",
+        cascade="all, delete-orphan",
+    )
+
+
+class ClaimModelScore(Base):
+    __tablename__ = "claim_model_scores"
+    __table_args__ = (
+        UniqueConstraint(
+            "model_run_id",
+            "claim_record_id",
+            name="uq_ml_score_run_claim",
+        ),
+        Index("ix_ml_score_claim", "claim_record_id"),
+        Index("ix_ml_score_anomaly", "is_anomaly"),
+        {"schema": "ml_meta"},
+    )
+
+    id: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True),
+        primary_key=True,
+        default=uuid.uuid4,
+    )
+    model_run_id: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True),
+        ForeignKey("ml_meta.model_runs.id", ondelete="CASCADE"),
+        nullable=False,
+    )
+    claim_record_id: Mapped[str] = mapped_column(String(64), nullable=False)
+    anomaly_score: Mapped[Decimal] = mapped_column(Numeric(18, 8), nullable=False)
+    is_anomaly: Mapped[bool] = mapped_column(nullable=False)
+    feature_deviation_context: Mapped[dict[str, object]] = mapped_column(
+        JSONB,
+        nullable=False,
+    )
+    scored_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
+
+    run: Mapped[ModelRun] = relationship(back_populates="scores")
