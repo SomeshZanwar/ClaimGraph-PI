@@ -1,7 +1,6 @@
-from sqlalchemy import select
-
 from app.db.models import RiskSignal, RuleRun
 from app.db.session import SessionLocal
+from sqlalchemy import select
 
 
 def main() -> None:
