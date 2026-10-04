@@ -149,7 +149,7 @@ Completed validation:
 
 ## Current File Being Worked On
 
-risk signal contract and deterministic rule engine
+Neo4j projection and graph analytics foundation
 
 ## Files/Areas Not Yet Worked On
 
@@ -330,6 +330,44 @@ Implemented and validated:
 - dbt build and tests against PostgreSQL fixture in CI
 - latest analytics CI run green
 
+## Phase 4 Completion
+
+Phase 4 is COMPLETE.
+
+Implemented and validated:
+
+- versioned YAML rule definitions
+- deterministic rule loader and ruleset hashing
+- persistent rule-run and risk-signal tables
+- exact duplicate claim review rule
+- repeated identical line review rule
+- rapid repeat service review rule
+- payment/allowed-charge consistency review rule
+- structured evidence payloads
+- deterministic risk CLI
+- safe fixture signals verified in CI
+- risk language explicitly avoids declaring fraud as fact
+
+## Phase 5 Completion
+
+Phase 5 is COMPLETE.
+
+Implemented and validated:
+
+- dominant HCPCS behavioral profile per synthetic provider
+- explicit operational peer assignment
+- volume bands
+- provider peer cohort key
+- peer cohort size
+- peer median allowed-charge baseline
+- median absolute deviation
+- robust z-score only for sufficiently sized cohorts
+- explicit INSUFFICIENT_COHORT and NO_VARIATION states
+- dbt test preventing peer scores for undersized cohorts
+- CI green
+
+Important limitation: DE-SynPUF NPIs are synthetic. These cohorts are behavioral comparison groups, not clinical specialty classifications.
+
 ## Next Action
 
-Build Phase 4 deterministic risk signals with explicit rule IDs, versions, evidence payloads, persistence, tests, and a repeatable rule-run command.
+Build the Neo4j projection, network analytics, graph-run metadata, bounded queries, and CI validation using the synthetic claims fixture.
