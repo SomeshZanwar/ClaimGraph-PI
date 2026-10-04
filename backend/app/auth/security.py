@@ -4,9 +4,10 @@ import hashlib
 import hmac
 import secrets
 from datetime import UTC, datetime, timedelta
+from uuid import UUID
 
 from argon2 import PasswordHasher, Type
-from argon2.exceptions import VerificationError, VerifyMismatchError
+from argon2.exceptions import InvalidHashError, VerificationError, VerifyMismatchError
 from sqlalchemy import select, update
 from sqlalchemy.orm import Session
 
@@ -46,7 +47,7 @@ def hash_password(password: str) -> str:
 def verify_password(password: str, password_hash: str) -> bool:
     try:
         return _password_hasher.verify(password_hash, password)
-    except (VerifyMismatchError, VerificationError):
+    except (InvalidHashError, VerifyMismatchError, VerificationError):
         return False
 
 
@@ -190,7 +191,7 @@ def revoke_session(user_session: UserSession) -> None:
         user_session.revoked_at = datetime.now(UTC)
 
 
-def revoke_all_sessions(session: Session, user_id: object) -> None:
+def revoke_all_sessions(session: Session, user_id: UUID) -> None:
     session.execute(
         update(UserSession)
         .where(
