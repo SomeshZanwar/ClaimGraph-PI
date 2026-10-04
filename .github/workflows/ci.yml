@@ -10,11 +10,15 @@ permissions:
 
 jobs:
   backend:
-    name: Backend
+    name: Backend and Analytics
     runs-on: ubuntu-latest
     env:
       DATABASE_URL: postgresql+psycopg://claimgraph:claimgraph@localhost:5432/claimgraph
       SESSION_SECRET: ci-only-session-secret-change-me
+      DBT_HOST: localhost
+      DBT_USER: claimgraph
+      DBT_PASSWORD: claimgraph
+      DBT_DATABASE: claimgraph
     services:
       postgres:
         image: postgres:17-alpine
@@ -39,17 +43,28 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Install backend
-        run: pip install -e "./backend[dev]"
+      - name: Install backend and analytics dependencies
+        run: |
+          pip install -e "./backend[dev]"
+          pip install -r dbt/requirements.txt
 
       - name: Lint backend
-        run: ruff check backend
+        run: ruff check backend scripts
 
       - name: Apply database migrations
         run: alembic -c backend/alembic.ini upgrade head
 
       - name: Test backend
         run: pytest backend --cov=backend/app --cov-report=term-missing
+
+      - name: Load analytics fixture
+        run: python scripts/load_dbt_fixture.py
+
+      - name: Validate dbt connection
+        run: dbt debug --project-dir dbt --profiles-dir dbt
+
+      - name: Build and test dbt models
+        run: dbt build --project-dir dbt --profiles-dir dbt
 
   frontend:
     name: Frontend
