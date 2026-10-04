@@ -379,6 +379,7 @@ class InvestigationCase(Base):
     priority_band: Mapped[str] = mapped_column(String(16), nullable=False)
     financial_exposure: Mapped[Decimal] = mapped_column(Numeric(14, 2), nullable=False)
     strongest_signal: Mapped[str | None] = mapped_column(String(160), nullable=True)
+    disposition: Mapped[str | None] = mapped_column(String(64), nullable=True)
     assigned_user_id: Mapped[uuid.UUID | None] = mapped_column(
         UUID(as_uuid=True),
         ForeignKey("auth.users.id", ondelete="SET NULL"),
@@ -392,6 +393,38 @@ class InvestigationCase(Base):
         back_populates="case",
         cascade="all, delete-orphan",
     )
+    notes: Mapped[list[CaseNote]] = relationship(
+        back_populates="case",
+        cascade="all, delete-orphan",
+    )
+
+
+class CaseNote(Base):
+    __tablename__ = "case_notes"
+    __table_args__ = (
+        Index("ix_casework_note_case_time", "case_id", "created_at"),
+        {"schema": "casework"},
+    )
+
+    id: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True),
+        primary_key=True,
+        default=uuid.uuid4,
+    )
+    case_id: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True),
+        ForeignKey("casework.cases.id", ondelete="CASCADE"),
+        nullable=False,
+    )
+    author_user_id: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True),
+        ForeignKey("auth.users.id", ondelete="RESTRICT"),
+        nullable=False,
+    )
+    body: Mapped[str] = mapped_column(Text, nullable=False)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
+
+    case: Mapped[InvestigationCase] = relationship(back_populates="notes")
 
 
 class CaseEvidence(Base):
