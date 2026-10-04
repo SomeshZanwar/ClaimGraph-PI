@@ -1,7 +1,15 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, Route, Routes } from "react-router-dom";
 
+function useDocumentTitle(title: string) {
+  useEffect(() => {
+    document.title = title;
+  }, [title]);
+}
+
 function HomePage() {
+  useDocumentTitle("ClaimGraph PI | Claims Investigation Intelligence");
+
   return (
     <main className="page-shell">
       <section className="hero" aria-labelledby="page-title">
@@ -28,13 +36,16 @@ function HomePage() {
 }
 
 function QueuePage() {
+  useDocumentTitle("Investigation Queue | ClaimGraph PI");
+
   return (
     <main className="page-shell">
       <section className="content-panel">
         <p className="eyebrow">Investigation workspace</p>
         <h1>Investigation queue</h1>
         <p>
-          The case queue will be connected after the canonical claims model and risk engine are in place.
+          No investigation cases are available yet. Cases will be created from validated
+          claims data after the risk pipeline runs.
         </p>
       </section>
     </main>
@@ -42,6 +53,8 @@ function QueuePage() {
 }
 
 function NotFoundPage() {
+  useDocumentTitle("Page Not Found | ClaimGraph PI");
+
   return (
     <main className="page-shell">
       <section className="content-panel">
