@@ -66,6 +66,12 @@ jobs:
       - name: Build and test dbt models
         run: dbt build --project-dir dbt --profiles-dir dbt
 
+      - name: Run deterministic risk rules
+        run: python -m app.risk.cli
+
+      - name: Verify deterministic fixture signals
+        run: python scripts/verify_risk_fixture.py
+
   frontend:
     name: Frontend
     runs-on: ubuntu-latest
