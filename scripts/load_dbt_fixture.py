@@ -4,11 +4,10 @@ import tempfile
 import zipfile
 from pathlib import Path
 
-from sqlalchemy import delete
-
 from app.db.models import IngestionBatch
 from app.db.session import SessionLocal
 from app.ingestion.cms_carrier import ingest_carrier_zip
+from sqlalchemy import delete
 
 
 def main() -> None:
