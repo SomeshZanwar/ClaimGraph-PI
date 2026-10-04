@@ -356,3 +356,63 @@ class ClaimModelScore(Base):
     scored_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
 
     run: Mapped[ModelRun] = relationship(back_populates="scores")
+
+
+class InvestigationCase(Base):
+    __tablename__ = "cases"
+    __table_args__ = (
+        UniqueConstraint("case_key", name="uq_casework_case_key"),
+        Index("ix_casework_claim", "claim_record_id"),
+        Index("ix_casework_status_priority", "status", "priority_score"),
+        {"schema": "casework"},
+    )
+
+    id: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True),
+        primary_key=True,
+        default=uuid.uuid4,
+    )
+    case_key: Mapped[str] = mapped_column(String(128), nullable=False)
+    claim_record_id: Mapped[str] = mapped_column(String(64), nullable=False)
+    status: Mapped[str] = mapped_column(String(32), nullable=False, default="NEW")
+    priority_score: Mapped[Decimal] = mapped_column(Numeric(8, 2), nullable=False)
+    priority_band: Mapped[str] = mapped_column(String(16), nullable=False)
+    financial_exposure: Mapped[Decimal] = mapped_column(Numeric(14, 2), nullable=False)
+    strongest_signal: Mapped[str | None] = mapped_column(String(160), nullable=True)
+    current_evidence_hash: Mapped[str] = mapped_column(String(64), nullable=False)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
+    updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
+
+    evidence_versions: Mapped[list[CaseEvidence]] = relationship(
+        back_populates="case",
+        cascade="all, delete-orphan",
+    )
+
+
+class CaseEvidence(Base):
+    __tablename__ = "case_evidence"
+    __table_args__ = (
+        UniqueConstraint(
+            "case_id",
+            "evidence_hash",
+            name="uq_casework_case_evidence_hash",
+        ),
+        Index("ix_casework_evidence_case", "case_id"),
+        {"schema": "casework"},
+    )
+
+    id: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True),
+        primary_key=True,
+        default=uuid.uuid4,
+    )
+    case_id: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True),
+        ForeignKey("casework.cases.id", ondelete="CASCADE"),
+        nullable=False,
+    )
+    evidence_hash: Mapped[str] = mapped_column(String(64), nullable=False)
+    payload: Mapped[dict[str, object]] = mapped_column(JSONB, nullable=False)
+    generated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
+
+    case: Mapped[InvestigationCase] = relationship(back_populates="evidence_versions")
