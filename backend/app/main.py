@@ -1,6 +1,12 @@
-from fastapi import FastAPI
+from __future__ import annotations
+
+import re
+import uuid
+
+from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 
+from app.auth.routes import router as auth_router
 from app.config import get_settings
 
 settings = get_settings()
@@ -16,8 +22,31 @@ app.add_middleware(
     allow_origins=[settings.frontend_origin],
     allow_credentials=True,
     allow_methods=["GET", "POST", "PATCH", "DELETE", "OPTIONS"],
-    allow_headers=["Content-Type", "Authorization", "X-Request-ID"],
+    allow_headers=["Content-Type", "Authorization", "X-Request-ID", "X-CSRF-Token"],
 )
+
+_REQUEST_ID_PATTERN = re.compile(r"^[A-Za-z0-9._:-]{1,64}$")
+
+
+@app.middleware("http")
+async def request_context(request: Request, call_next):
+    supplied = request.headers.get("X-Request-ID", "")
+    request_id = (
+        supplied
+        if _REQUEST_ID_PATTERN.fullmatch(supplied)
+        else str(uuid.uuid4())
+    )
+    request.state.request_id = request_id
+
+    response = await call_next(request)
+    response.headers["X-Request-ID"] = request_id
+    response.headers["X-Content-Type-Options"] = "nosniff"
+    response.headers["Referrer-Policy"] = "no-referrer"
+    response.headers["X-Frame-Options"] = "DENY"
+    return response
+
+
+app.include_router(auth_router)
 
 
 @app.get("/health", tags=["system"])
