@@ -92,6 +92,12 @@ jobs:
       - name: Verify graph fixture
         run: python scripts/verify_graph_fixture.py
 
+      - name: Train and score anomaly fixture
+        run: python -m app.ml.cli --fixture-mode --contamination 0.25
+
+      - name: Verify anomaly model fixture
+        run: python scripts/verify_ml_fixture.py
+
   frontend:
     name: Frontend
     runs-on: ubuntu-latest
