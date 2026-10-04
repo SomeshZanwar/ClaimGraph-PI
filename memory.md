@@ -119,24 +119,36 @@ This follow-up does not block Phase 2 because CI resolves and validates the depe
 
 Phase 2: Data Source, Canonical Model, and Ingestion
 
-Status: NOT STARTED
+Status: IN PROGRESS
 
 ## Next Work
 
-1. select the supported public/synthetic claims source
-2. document source provenance and limitations
-3. define ingestion batch contract
-4. define canonical identifiers
-5. create PostgreSQL raw schema and initial migration
-6. implement schema validation
-7. implement accepted/quarantined record flow
-8. implement ingestion CLI
-9. add ingestion tests
-10. update README and memory
+Completed in Phase 2 so far:
+
+- CMS DE-SynPUF Carrier Claims selected as the primary source
+- source provenance and limitations documented
+- Sample 2 source manifest added
+- raw ingestion batch contract created
+- PostgreSQL raw claim/claim-line/rejection models created
+- initial Alembic migration added
+- streaming ZIP/CSV reader implemented
+- claim and line-slot parser implemented
+- invalid-row quarantine path implemented
+- ingestion CLI implemented
+- parser and ZIP-streaming tests added
+
+Next:
+
+1. validate the migration and ingestion code in CI
+2. add PostgreSQL integration coverage
+3. add a small repository-safe fixture that mirrors the CMS schema
+4. run the first end-to-end ingestion test
+5. document ingestion commands and expected metrics
+6. mark Phase 2 complete before starting dbt models
 
 ## Current File Being Worked On
 
-memory.md
+Phase 2 ingestion validation and CI hardening
 
 ## Files/Areas Not Yet Worked On
 
@@ -300,4 +312,4 @@ No false authorship claims should be added.
 
 ## Next Action
 
-Begin Phase 2 by selecting and documenting the claims dataset, then implement the raw ingestion contract and database schema.
+Finish Phase 2 validation by running the migration and ingestion path against PostgreSQL in CI, then add a small safe fixture and end-to-end ingestion test.
