@@ -49,6 +49,8 @@ data/private/
 
 # ML / experiments
 mlruns/
+mlflow.db
+mlartifacts/
 artifacts/
 models/
 *.joblib
