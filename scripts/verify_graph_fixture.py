@@ -1,9 +1,8 @@
-from neo4j import GraphDatabase
-from sqlalchemy import select
-
 from app.config import get_settings
 from app.db.models import GraphRun, ProviderGraphMetric
 from app.db.session import SessionLocal
+from neo4j import GraphDatabase
+from sqlalchemy import select
 
 
 def main() -> None:
