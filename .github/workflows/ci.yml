@@ -98,6 +98,12 @@ jobs:
       - name: Verify anomaly model fixture
         run: python scripts/verify_ml_fixture.py
 
+      - name: Compose investigation cases
+        run: python -m app.casework.cli
+
+      - name: Verify case evidence fixture
+        run: python scripts/verify_case_fixture.py
+
   frontend:
     name: Frontend
     runs-on: ubuntu-latest
