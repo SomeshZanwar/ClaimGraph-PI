@@ -33,6 +33,8 @@ class Settings(BaseSettings):
 
     log_level: str = Field(default="INFO")
     otel_enabled: bool = Field(default=False)
+    mlflow_tracking_uri: str = Field(default="file:./mlruns")
+    model_artifact_dir: str = Field(default="artifacts/models")
 
 
 @lru_cache
