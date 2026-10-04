@@ -30,6 +30,20 @@ class Settings(BaseSettings):
 
     session_secret: str = Field(default="development-only-change-me", min_length=16)
     session_ttl_minutes: int = Field(default=60, ge=5, le=1440)
+    session_cookie_name: str = Field(default="cg_session")
+    csrf_cookie_name: str = Field(default="cg_csrf")
+    auth_token_ttl_minutes: int = Field(default=30, ge=5, le=1440)
+    login_rate_limit_attempts: int = Field(default=5, ge=1, le=100)
+    login_rate_limit_window_seconds: int = Field(default=900, ge=60, le=86400)
+    frontend_base_url: str = Field(default="http://localhost:5173")
+
+    email_delivery_mode: str = Field(default="smtp")
+    mail_host: str = Field(default="localhost")
+    mail_port: int = Field(default=1025, ge=1, le=65535)
+    mail_user: str | None = Field(default=None)
+    mail_password: str | None = Field(default=None)
+    mail_from: str = Field(default="noreply@example.local")
+    mail_use_tls: bool = Field(default=False)
 
     log_level: str = Field(default="INFO")
     otel_enabled: bool = Field(default=False)
