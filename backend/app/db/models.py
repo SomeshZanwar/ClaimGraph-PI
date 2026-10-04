@@ -159,3 +159,64 @@ class RejectedRecord(Base):
     reason_code: Mapped[str] = mapped_column(String(64), nullable=False)
     reason_detail: Mapped[str] = mapped_column(Text, nullable=False)
     source_payload: Mapped[dict[str, str | None]] = mapped_column(JSONB, nullable=False)
+
+
+class RuleRun(Base):
+    __tablename__ = "rule_runs"
+    __table_args__ = (
+        Index("ix_risk_rule_run_status", "status"),
+        {"schema": "risk"},
+    )
+
+    id: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True),
+        primary_key=True,
+        default=uuid.uuid4,
+    )
+    ruleset_hash: Mapped[str] = mapped_column(String(64), nullable=False)
+    status: Mapped[str] = mapped_column(String(32), nullable=False, default="STARTED")
+    started_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
+    completed_at: Mapped[datetime | None] = mapped_column(
+        DateTime(timezone=True),
+        nullable=True,
+    )
+    signal_count: Mapped[int] = mapped_column(BigInteger, nullable=False, default=0)
+    error_message: Mapped[str | None] = mapped_column(Text, nullable=True)
+
+    signals: Mapped[list[RiskSignal]] = relationship(
+        back_populates="run",
+        cascade="all, delete-orphan",
+    )
+
+
+class RiskSignal(Base):
+    __tablename__ = "risk_signals"
+    __table_args__ = (
+        Index("ix_risk_signal_rule", "rule_id", "rule_version"),
+        Index("ix_risk_signal_entity", "entity_type", "entity_id"),
+        Index("ix_risk_signal_severity", "severity"),
+        {"schema": "risk"},
+    )
+
+    id: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True),
+        primary_key=True,
+        default=uuid.uuid4,
+    )
+    rule_run_id: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True),
+        ForeignKey("risk.rule_runs.id", ondelete="CASCADE"),
+        nullable=False,
+    )
+    rule_id: Mapped[str] = mapped_column(String(64), nullable=False)
+    rule_version: Mapped[str] = mapped_column(String(32), nullable=False)
+    entity_type: Mapped[str] = mapped_column(String(32), nullable=False)
+    entity_id: Mapped[str] = mapped_column(String(160), nullable=False)
+    severity: Mapped[str] = mapped_column(String(16), nullable=False)
+    explanation: Mapped[str] = mapped_column(Text, nullable=False)
+    evidence: Mapped[dict[str, object]] = mapped_column(JSONB, nullable=False)
+    observed_value: Mapped[Decimal | None] = mapped_column(Numeric(18, 4), nullable=True)
+    threshold_value: Mapped[Decimal | None] = mapped_column(Numeric(18, 4), nullable=True)
+    evaluated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
+
+    run: Mapped[RuleRun] = relationship(back_populates="signals")
