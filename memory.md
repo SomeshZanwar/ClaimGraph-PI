@@ -149,7 +149,7 @@ Completed validation:
 
 ## Current File Being Worked On
 
-dbt analytical model foundation
+risk signal contract and deterministic rule engine
 
 ## Files/Areas Not Yet Worked On
 
@@ -311,6 +311,25 @@ No false authorship claims should be added.
 
 2026-10-04
 
+## Phase 3 Completion
+
+Phase 3 is COMPLETE.
+
+Implemented and validated:
+
+- dbt source definitions for raw ingestion tables
+- staging models for batches, claims, and claim lines
+- canonical claim service-event intermediate model
+- claim-line fact
+- claim-level fact
+- synthetic provider dimension
+- provider operational claim metrics mart
+- schema and custom date-order tests
+- schema naming aligned to architecture
+- dbt connection validation in CI
+- dbt build and tests against PostgreSQL fixture in CI
+- latest analytics CI run green
+
 ## Next Action
 
-Build the dbt source, staging, intermediate, fact/dimension, and provider peer models with data-quality tests, then validate them against the PostgreSQL fixture in CI.
+Build Phase 4 deterministic risk signals with explicit rule IDs, versions, evidence payloads, persistence, tests, and a repeatable rule-run command.
