@@ -1,0 +1,21 @@
+select
+    claim_line_record_id,
+    claim_record_id,
+    ingestion_batch_id,
+    source_row_number,
+    beneficiary_id,
+    claim_id,
+    claim_from_date,
+    claim_through_date,
+    line_number,
+    provider_npi,
+    tax_number,
+    hcpcs_code,
+    payment_amount,
+    deductible_amount,
+    primary_payer_amount,
+    coinsurance_amount,
+    allowed_charge_amount,
+    processing_indicator_code,
+    diagnosis_code
+from {{ ref('int_claim_service_events') }}
