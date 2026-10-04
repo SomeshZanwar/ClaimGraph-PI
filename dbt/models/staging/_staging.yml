@@ -1,0 +1,31 @@
+version: 2
+
+models:
+  - name: stg_carrier_claims
+    columns:
+      - name: claim_record_id
+        data_tests:
+          - not_null
+          - unique
+      - name: ingestion_batch_id
+        data_tests:
+          - not_null
+      - name: beneficiary_id
+        data_tests:
+          - not_null
+      - name: claim_id
+        data_tests:
+          - not_null
+
+  - name: stg_carrier_claim_lines
+    columns:
+      - name: claim_line_record_id
+        data_tests:
+          - not_null
+          - unique
+      - name: claim_record_id
+        data_tests:
+          - not_null
+      - name: line_number
+        data_tests:
+          - not_null
