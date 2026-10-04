@@ -6,10 +6,10 @@ from typing import Annotated
 from fastapi import Depends, HTTPException, Request, status
 from sqlalchemy.orm import Session
 
+from app.auth.security import hash_token, resolve_session
 from app.config import get_settings
 from app.db.models import User, UserSession
 from app.db.session import get_db
-from app.auth.security import hash_token, resolve_session
 
 
 @dataclass(frozen=True)
