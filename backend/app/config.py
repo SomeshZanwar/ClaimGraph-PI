@@ -33,7 +33,7 @@ class Settings(BaseSettings):
 
     log_level: str = Field(default="INFO")
     otel_enabled: bool = Field(default=False)
-    mlflow_tracking_uri: str = Field(default="file:./mlruns")
+    mlflow_tracking_uri: str = Field(default="sqlite:///mlflow.db")
     model_artifact_dir: str = Field(default="artifacts/models")
 
 
