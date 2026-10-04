@@ -5,11 +5,11 @@ import hashlib
 import io
 import uuid
 import zipfile
+from collections.abc import Iterator
 from dataclasses import dataclass
-from datetime import date, datetime, timezone
+from datetime import UTC, date, datetime
 from decimal import Decimal, InvalidOperation
 from pathlib import Path
-from typing import Iterator
 
 from sqlalchemy import select
 from sqlalchemy.orm import Session
@@ -242,8 +242,7 @@ def iter_carrier_rows(zip_path: Path) -> Iterator[tuple[int, dict[str, str | Non
                         + ", ".join(sorted(missing_columns))
                     )
 
-                for source_row_number, row in enumerate(reader, start=2):
-                    yield source_row_number, row
+                yield from enumerate(reader, start=2)
 
 
 def ingest_carrier_zip(
@@ -274,7 +273,7 @@ def ingest_carrier_zip(
         source_filename=zip_path.name,
         source_sha256=source_hash,
         status="STARTED",
-        started_at=datetime.now(timezone.utc),
+        started_at=datetime.now(UTC),
     )
     session.add(batch)
     session.commit()
@@ -339,7 +338,7 @@ def ingest_carrier_zip(
                 rows_since_commit = 0
 
         batch.status = "COMPLETED"
-        batch.completed_at = datetime.now(timezone.utc)
+        batch.completed_at = datetime.now(UTC)
         session.commit()
         session.refresh(batch)
         return batch
@@ -349,7 +348,7 @@ def ingest_carrier_zip(
         failed_batch = session.get(IngestionBatch, batch.id)
         if failed_batch is not None:
             failed_batch.status = "FAILED"
-            failed_batch.completed_at = datetime.now(timezone.utc)
+            failed_batch.completed_at = datetime.now(UTC)
             failed_batch.error_message = str(exc)[:2000]
             session.commit()
         raise
