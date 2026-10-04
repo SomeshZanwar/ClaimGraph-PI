@@ -24,10 +24,10 @@ def test_ingest_carrier_zip_persists_claims_and_rejections(tmp_path: Path) -> No
         )
 
         assert batch.status == "COMPLETED"
-        assert batch.rows_seen == 3
-        assert batch.rows_accepted == 2
+        assert batch.rows_seen == 4
+        assert batch.rows_accepted == 3
         assert batch.rows_rejected == 1
-        assert batch.claim_lines_loaded == 2
+        assert batch.claim_lines_loaded == 3
 
         claims = session.scalars(
             select(RawCarrierClaim).where(
@@ -40,7 +40,7 @@ def test_ingest_carrier_zip_persists_claims_and_rejections(tmp_path: Path) -> No
             )
         ).all()
 
-        assert {claim.claim_id for claim in claims} == {"SYNCLM001", "SYNCLM002"}
+        assert {claim.claim_id for claim in claims} == {"SYNCLM001", "SYNCLM002", "SYNCLM004"}
         assert len(rejected) == 1
         assert rejected[0].reason_code == "INVALID_DATE_RANGE"
 
