@@ -1,0 +1,129 @@
+rules:
+  - id: CG-DUP-001
+    version: "1.0.0"
+    name: Potential exact duplicate claim
+    entity_type: CLAIM_GROUP
+    severity: HIGH
+    explanation: Multiple claim records share the same synthetic beneficiary, service dates, line count, and aggregate payment values. Review the records as a potential duplicate submission pattern.
+    sql: |
+      with duplicate_groups as (
+          select
+              beneficiary_id,
+              claim_from_date,
+              claim_through_date,
+              line_count,
+              total_payment_amount,
+              total_allowed_charge_amount,
+              count(*) as duplicate_count,
+              min(claim_record_id) as first_claim_record_id,
+              max(claim_record_id) as last_claim_record_id
+          from analytics.fact_claims
+          group by
+              beneficiary_id,
+              claim_from_date,
+              claim_through_date,
+              line_count,
+              total_payment_amount,
+              total_allowed_charge_amount
+          having count(*) > 1
+      )
+      select
+          first_claim_record_id || ':' || last_claim_record_id as entity_id,
+          duplicate_count::numeric as observed_value,
+          1::numeric as threshold_value,
+          beneficiary_id,
+          claim_from_date,
+          claim_through_date,
+          line_count,
+          total_payment_amount,
+          total_allowed_charge_amount,
+          first_claim_record_id,
+          last_claim_record_id
+      from duplicate_groups
+
+  - id: CG-LINE-001
+    version: "1.0.0"
+    name: Repeated identical service line
+    entity_type: CLAIM
+    severity: MEDIUM
+    explanation: A claim contains repeated service lines with the same provider, procedure, diagnosis, payment, and allowed-charge values. Review whether the repeated lines are expected.
+    sql: |
+      select
+          claim_record_id as entity_id,
+          count(*)::numeric as observed_value,
+          1::numeric as threshold_value,
+          claim_id,
+          beneficiary_id,
+          provider_npi,
+          hcpcs_code,
+          diagnosis_code,
+          payment_amount,
+          allowed_charge_amount
+      from analytics.fact_claim_lines
+      group by
+          claim_record_id,
+          claim_id,
+          beneficiary_id,
+          provider_npi,
+          hcpcs_code,
+          diagnosis_code,
+          payment_amount,
+          allowed_charge_amount
+      having count(*) > 1
+
+  - id: CG-TEMP-001
+    version: "1.0.0"
+    name: Rapid repeat service across claims
+    entity_type: CLAIM_PAIR
+    severity: MEDIUM
+    explanation: The same synthetic beneficiary, provider, and procedure appear on separate claims within three days. Review the repeat service context before drawing a conclusion.
+    sql: |
+      select
+          least(a.claim_record_id, b.claim_record_id)
+              || ':' ||
+          greatest(a.claim_record_id, b.claim_record_id) as entity_id,
+          abs(a.claim_from_date - b.claim_from_date)::numeric as observed_value,
+          3::numeric as threshold_value,
+          a.beneficiary_id,
+          a.provider_npi,
+          a.hcpcs_code,
+          a.claim_id as first_claim_id,
+          b.claim_id as second_claim_id,
+          a.claim_from_date as first_service_date,
+          b.claim_from_date as second_service_date
+      from analytics.fact_claim_lines a
+      inner join analytics.fact_claim_lines b
+          on a.beneficiary_id = b.beneficiary_id
+         and a.provider_npi = b.provider_npi
+         and a.hcpcs_code = b.hcpcs_code
+         and a.claim_record_id < b.claim_record_id
+      where
+          a.provider_npi is not null
+          and a.hcpcs_code is not null
+          and a.claim_from_date is not null
+          and b.claim_from_date is not null
+          and abs(a.claim_from_date - b.claim_from_date) <= 3
+
+  - id: CG-FIN-001
+    version: "1.0.0"
+    name: Payment exceeds allowed charge
+    entity_type: CLAIM_LINE
+    severity: MEDIUM
+    explanation: The line payment amount exceeds the line allowed-charge amount. Review the source fields and payment context for a possible financial-consistency issue.
+    sql: |
+      select
+          claim_line_record_id as entity_id,
+          payment_amount as observed_value,
+          allowed_charge_amount as threshold_value,
+          claim_record_id,
+          claim_id,
+          beneficiary_id,
+          provider_npi,
+          hcpcs_code,
+          payment_amount,
+          allowed_charge_amount
+      from analytics.fact_claim_lines
+      where
+          payment_amount is not null
+          and allowed_charge_amount is not null
+          and payment_amount > allowed_charge_amount
