@@ -14,7 +14,10 @@ function HomePage() {
           <Link className="button button-primary" to="/queue">
             Open investigation queue
           </Link>
-          <a className="button button-secondary" href="/PRD.md">
+          <a
+            className="button button-secondary"
+            href="https://github.com/SomeshZanwar/ClaimGraph-PI/blob/main/PRD.md"
+          >
             Read product requirements
           </a>
         </div>
@@ -72,7 +75,6 @@ function App() {
 
       <footer className="site-footer">
         <span>© 2026 ClaimGraph PI</span>
-        <a href="mailto:support@example.com">Contact</a>
       </footer>
     </div>
   );
