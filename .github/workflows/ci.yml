@@ -12,6 +12,24 @@ jobs:
   backend:
     name: Backend
     runs-on: ubuntu-latest
+    env:
+      DATABASE_URL: postgresql+psycopg://claimgraph:claimgraph@localhost:5432/claimgraph
+      SESSION_SECRET: ci-only-session-secret-change-me
+    services:
+      postgres:
+        image: postgres:17-alpine
+        env:
+          POSTGRES_DB: claimgraph
+          POSTGRES_USER: claimgraph
+          POSTGRES_PASSWORD: claimgraph
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U claimgraph -d claimgraph"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
@@ -26,6 +44,9 @@ jobs:
 
       - name: Lint backend
         run: ruff check backend
+
+      - name: Apply database migrations
+        run: alembic -c backend/alembic.ini upgrade head
 
       - name: Test backend
         run: pytest backend --cov=backend/app --cov-report=term-missing
