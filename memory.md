@@ -149,7 +149,7 @@ Completed validation:
 
 ## Current File Being Worked On
 
-Neo4j projection and graph analytics foundation
+claim anomaly feature mart and unsupervised model pipeline
 
 ## Files/Areas Not Yet Worked On
 
@@ -368,6 +368,30 @@ Implemented and validated:
 
 Important limitation: DE-SynPUF NPIs are synthetic. These cohorts are behavioral comparison groups, not clinical specialty classifications.
 
+## Phase 6 Completion
+
+Phase 6 is COMPLETE.
+
+Implemented and validated:
+
+- PostgreSQL graph-run metadata and provider graph-metric tables
+- Neo4j constraints
+- idempotent managed graph projection
+- Member, Claim, Provider, and Procedure nodes
+- Member-to-Claim, Claim-to-Provider, and Claim-to-Procedure relationships
+- source snapshot hashing
+- bounded batch projection
+- NetworkX provider-member bipartite analytics
+- shared-provider counts
+- maximum shared-member overlap
+- connected-component provider/member counts
+- persisted graph metrics
+- graph unit tests
+- real Neo4j service in CI
+- graph projection and verification green in CI
+
+Current dataset limitation: Carrier claims do not provide reliable facility/address entities for this synthetic graph, so those node types are not fabricated.
+
 ## Next Action
 
-Build the Neo4j projection, network analytics, graph-run metadata, bounded queries, and CI validation using the synthetic claims fixture.
+Build a versioned unsupervised claim-anomaly pipeline using canonical claim features, MLflow tracking, persistent scores, explicit feature-deviation context, and no fabricated fraud labels.
