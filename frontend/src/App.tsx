@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Link, Route, Routes } from "react-router-dom";
 
 function HomePage() {
@@ -56,14 +57,39 @@ function NotFoundPage() {
 }
 
 function App() {
+  const [menuOpen, setMenuOpen] = useState(false);
+  const currentYear = new Date().getFullYear();
+
   return (
     <div className="app-frame">
       <header className="site-header">
-        <Link className="brand" to="/" aria-label="ClaimGraph PI home">
+        <Link
+          className="brand"
+          to="/"
+          aria-label="ClaimGraph PI home"
+          onClick={() => setMenuOpen(false)}
+        >
           ClaimGraph PI
         </Link>
-        <nav aria-label="Primary navigation">
-          <Link to="/queue">Queue</Link>
+
+        <button
+          className="menu-toggle"
+          type="button"
+          aria-expanded={menuOpen}
+          aria-controls="primary-navigation"
+          onClick={() => setMenuOpen((open) => !open)}
+        >
+          {menuOpen ? "Close" : "Menu"}
+        </button>
+
+        <nav
+          id="primary-navigation"
+          className={menuOpen ? "primary-nav primary-nav-open" : "primary-nav"}
+          aria-label="Primary navigation"
+        >
+          <Link to="/queue" onClick={() => setMenuOpen(false)}>
+            Queue
+          </Link>
         </nav>
       </header>
 
@@ -74,7 +100,7 @@ function App() {
       </Routes>
 
       <footer className="site-footer">
-        <span>© 2026 ClaimGraph PI</span>
+        <span>© {currentYear} ClaimGraph PI</span>
       </footer>
     </div>
   );
