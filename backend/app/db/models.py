@@ -220,3 +220,68 @@ class RiskSignal(Base):
     evaluated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
 
     run: Mapped[RuleRun] = relationship(back_populates="signals")
+
+
+class GraphRun(Base):
+    __tablename__ = "graph_runs"
+    __table_args__ = (
+        Index("ix_graph_meta_run_status", "status"),
+        {"schema": "graph_meta"},
+    )
+
+    id: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True),
+        primary_key=True,
+        default=uuid.uuid4,
+    )
+    status: Mapped[str] = mapped_column(String(32), nullable=False, default="STARTED")
+    source_snapshot_hash: Mapped[str] = mapped_column(String(64), nullable=False)
+    started_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
+    completed_at: Mapped[datetime | None] = mapped_column(
+        DateTime(timezone=True),
+        nullable=True,
+    )
+    projected_rows: Mapped[int] = mapped_column(BigInteger, nullable=False, default=0)
+    provider_nodes: Mapped[int] = mapped_column(BigInteger, nullable=False, default=0)
+    member_nodes: Mapped[int] = mapped_column(BigInteger, nullable=False, default=0)
+    claim_nodes: Mapped[int] = mapped_column(BigInteger, nullable=False, default=0)
+    procedure_nodes: Mapped[int] = mapped_column(BigInteger, nullable=False, default=0)
+    error_message: Mapped[str | None] = mapped_column(Text, nullable=True)
+
+    provider_metrics: Mapped[list[ProviderGraphMetric]] = relationship(
+        back_populates="run",
+        cascade="all, delete-orphan",
+    )
+
+
+class ProviderGraphMetric(Base):
+    __tablename__ = "provider_graph_metrics"
+    __table_args__ = (
+        UniqueConstraint(
+            "graph_run_id",
+            "provider_npi",
+            name="uq_provider_graph_metric_run_provider",
+        ),
+        Index("ix_graph_metric_provider", "provider_npi"),
+        {"schema": "graph_meta"},
+    )
+
+    id: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True),
+        primary_key=True,
+        default=uuid.uuid4,
+    )
+    graph_run_id: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True),
+        ForeignKey("graph_meta.graph_runs.id", ondelete="CASCADE"),
+        nullable=False,
+    )
+    provider_npi: Mapped[str] = mapped_column(String(32), nullable=False)
+    member_count: Mapped[int] = mapped_column(Integer, nullable=False)
+    shared_provider_count: Mapped[int] = mapped_column(Integer, nullable=False)
+    max_shared_members_with_peer: Mapped[int] = mapped_column(Integer, nullable=False)
+    component_provider_count: Mapped[int] = mapped_column(Integer, nullable=False)
+    component_member_count: Mapped[int] = mapped_column(Integer, nullable=False)
+    evaluated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
+
+    run: Mapped[GraphRun] = relationship(back_populates="provider_metrics")
