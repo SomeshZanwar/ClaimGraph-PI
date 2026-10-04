@@ -1,0 +1,22 @@
+version: 2
+
+models:
+  - name: mart_claim_ml_features
+    description: >
+      Numeric claim-level features for unsupervised anomaly detection. The
+      resulting anomaly score is an investigation signal, not a fraud
+      probability.
+    columns:
+      - name: claim_record_id
+        data_tests:
+          - not_null
+          - unique
+      - name: line_count
+        data_tests:
+          - not_null
+      - name: total_payment_amount
+        data_tests:
+          - not_null
+      - name: total_allowed_charge_amount
+        data_tests:
+          - not_null
