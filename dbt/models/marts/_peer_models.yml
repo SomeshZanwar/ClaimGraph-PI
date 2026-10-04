@@ -1,0 +1,28 @@
+version: 2
+
+models:
+  - name: mart_provider_peer_metrics
+    description: >
+      Operational provider peer comparison derived only from synthetic DE-SynPUF
+      billing behavior. Peer groups are not clinical specialties and must not be
+      represented as such.
+    columns:
+      - name: provider_npi
+        data_tests:
+          - not_null
+          - unique
+      - name: peer_group_key
+        data_tests:
+          - not_null
+      - name: peer_group_size
+        data_tests:
+          - not_null
+      - name: peer_comparison_status
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values:
+                  - INSUFFICIENT_COHORT
+                  - NO_VARIATION
+                  - COMPARABLE
