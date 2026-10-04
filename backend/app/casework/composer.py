@@ -10,6 +10,7 @@ from uuid import UUID
 from sqlalchemy import bindparam, select, text
 from sqlalchemy.orm import Session
 
+from app.casework.prioritization import calculate_priority
 from app.db.models import (
     CaseEvidence,
     ClaimModelScore,
@@ -20,7 +21,6 @@ from app.db.models import (
     RiskSignal,
     RuleRun,
 )
-from app.casework.prioritization import calculate_priority
 
 
 def _json_safe(value: Any) -> Any:
