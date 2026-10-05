@@ -130,3 +130,48 @@ jobs:
 
       - name: Build frontend
         run: npm run build
+
+  security:
+    name: Security
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Scan committed files for high-risk secret patterns
+        run: python scripts/security_scan.py
+
+      - name: Install backend for dependency audit
+        run: |
+          pip install -e "./backend"
+          pip install pip-audit
+
+      - name: Audit Python dependencies
+        run: pip-audit --local --skip-editable
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Install frontend dependencies
+        working-directory: frontend
+        run: npm install
+
+      - name: Audit frontend dependencies
+        working-directory: frontend
+        run: npm audit --audit-level=high
+
+      - name: Build frontend and check for backend secret names
+        working-directory: frontend
+        run: |
+          npm run build
+          if grep -R -E "SESSION_SECRET=|NEO4J_PASSWORD=|DATABASE_URL=" dist; then
+            echo "Backend secret material marker found in frontend bundle"
+            exit 1
+          fi
