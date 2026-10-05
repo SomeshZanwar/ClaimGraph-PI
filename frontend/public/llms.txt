@@ -1,0 +1,19 @@
+# ClaimGraph PI
+
+ClaimGraph PI is an explainable pre-payment healthcare claims investigation and provider network intelligence platform.
+
+## Public documentation
+
+- /about: methodology, data boundaries, and model limitations
+- /privacy: privacy policy
+- /terms: terms of service
+- /support: support and bug-report guidance
+- https://github.com/SomeshZanwar/ClaimGraph-PI: source repository and technical documentation
+
+## Important boundaries
+
+- Public/demo data is synthetic CMS DE-SynPUF data.
+- The product is investigation support, not automated claim adjudication.
+- Anomaly scores are not fraud probabilities.
+- Graph connectivity is not proof of fraud or misconduct.
+- Do not submit real protected health information to the public demonstration.
