@@ -248,8 +248,14 @@ def add_case_note(
     case = _get_case_or_404(db, context, case_id)
     if context.user.role == "AUDITOR":
         raise HTTPException(status_code=403, detail="Audit role is read-only")
-    if case.assigned_user_id not in {context.user.id} and context.user.role not in MANAGER_ROLES:
-        raise HTTPException(status_code=403, detail="Assign the case before adding notes")
+    if (
+        case.assigned_user_id not in {context.user.id}
+        and context.user.role not in MANAGER_ROLES
+    ):
+        raise HTTPException(
+            status_code=403,
+            detail="Assign the case before adding notes",
+        )
 
     body = payload.body.strip()
     if not body:
@@ -262,6 +268,7 @@ def add_case_note(
         created_at=datetime.now(UTC),
     )
     db.add(note)
+    db.flush()
     record_audit_event(
         db,
         event_type="CASE_NOTE_CREATED",
