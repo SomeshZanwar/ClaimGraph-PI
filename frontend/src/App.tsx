@@ -1,4 +1,4 @@
-import { FormEvent, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   Link,
   Navigate,
@@ -12,7 +12,7 @@ import {
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import NetworkGraph from "./components/NetworkGraph";
-import { api, CaseDetail, User } from "./lib/api";
+import { api, User } from "./lib/api";
 import {
   getAnalyticsConsent,
   setAnalyticsConsent,
