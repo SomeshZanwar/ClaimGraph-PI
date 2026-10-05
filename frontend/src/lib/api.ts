@@ -134,4 +134,17 @@ export const api = {
       edges: Array<{ source: string; target: string; type: string }>;
       truncated: boolean;
     }>(`/graph/providers/${encodeURIComponent(id)}`),
+  track: (
+    eventName: string,
+    route: string,
+    properties: Record<string, string | number | boolean | null> = {},
+  ) =>
+    request<{ status: string }>("/telemetry/events", {
+      method: "POST",
+      body: JSON.stringify({
+        event_name: eventName,
+        route,
+        properties,
+      }),
+    }),
 };
