@@ -26,7 +26,8 @@ dependencies = [
   "joblib>=1.4,<2.0",
   "mlflow-skinny>=3.0,<4.0",
   "argon2-cffi>=23.1,<26.0",
-  "email-validator>=2.2,<3.0"
+  "email-validator>=2.2,<3.0",
+  "prometheus-client>=0.22,<1.0"
 ]
 
 [project.optional-dependencies]
