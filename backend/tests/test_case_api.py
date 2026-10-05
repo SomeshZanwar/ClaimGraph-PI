@@ -24,8 +24,7 @@ from app.main import app
 client = TestClient(app)
 
 
-@pytest.fixture(autouse=True)
-def clear_case_auth_tables() -> None:
+def _clear_case_auth_state() -> None:
     client.cookies.clear()
     with SessionLocal() as session:
         session.execute(delete(CaseNote))
@@ -35,6 +34,13 @@ def clear_case_auth_tables() -> None:
         session.execute(delete(UserSession))
         session.execute(delete(User))
         session.commit()
+
+
+@pytest.fixture(autouse=True)
+def clear_case_auth_tables():
+    _clear_case_auth_state()
+    yield
+    _clear_case_auth_state()
 
 
 def create_user_and_session(role: str = "INVESTIGATOR") -> tuple[User, str, str]:
