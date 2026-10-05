@@ -9,7 +9,7 @@ from sqlalchemy.orm import Session
 
 from app.api.schemas import ProviderProfileResponse
 from app.auth.dependencies import AuthContext, get_auth_context
-from app.db.models import GraphRun, InvestigationCase, ProviderGraphMetric
+from app.db.models import GraphRun, ProviderGraphMetric
 from app.db.session import get_db
 
 router = APIRouter(prefix="/api/v1/providers", tags=["providers"])
