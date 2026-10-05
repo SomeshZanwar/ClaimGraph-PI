@@ -103,6 +103,24 @@ function LoadingState({ label = "Loading data" }: { label?: string }) {
   );
 }
 
+function TelemetryTracker() {
+  const location = useLocation();
+
+  useEffect(() => {
+    if (getAnalyticsConsent() !== "granted") return;
+
+    const normalizedRoute = location.pathname
+      .replace(/^\/cases\/[^/]+$/, "/cases/:id")
+      .replace(/^\/providers\/[^/]+$/, "/providers/:id");
+
+    void api.track("page_view", normalizedRoute).catch(() => {
+      // Analytics failures never block the product workflow.
+    });
+  }, [location.pathname]);
+
+  return null;
+}
+
 function CookieBanner() {
   const [consent, setConsent] = useState(getAnalyticsConsent());
 
@@ -945,6 +963,7 @@ function App() {
 
   return (
     <div className="app-frame">
+      <TelemetryTracker />
       <AppHeader user={user} />
       <Routes>
         <Route path="/" element={<HomePage user={user} />} />
