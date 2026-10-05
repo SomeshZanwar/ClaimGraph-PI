@@ -167,22 +167,37 @@ def update_case(
 
     changes: dict[str, object] = {}
     if payload.assign_to_self:
-        if case.assigned_user_id not in {None, context.user.id} and context.user.role not in MANAGER_ROLES:
-            raise HTTPException(status_code=403, detail="Case is assigned to another investigator")
+        if (
+            case.assigned_user_id not in {None, context.user.id}
+            and context.user.role not in MANAGER_ROLES
+        ):
+            raise HTTPException(
+                status_code=403,
+                detail="Case is assigned to another investigator",
+            )
         case.assigned_user_id = context.user.id
         changes["assigned_user_id"] = str(context.user.id)
 
     if payload.status is not None:
         if payload.status not in VALID_STATUSES:
             raise HTTPException(status_code=422, detail="Invalid case status")
-        if case.assigned_user_id not in {context.user.id} and context.user.role not in MANAGER_ROLES:
+        if (
+            case.assigned_user_id not in {context.user.id}
+            and context.user.role not in MANAGER_ROLES
+        ):
             raise HTTPException(status_code=403, detail="Assign the case before changing status")
         case.status = payload.status
         changes["status"] = payload.status
 
     if payload.disposition is not None:
-        if case.assigned_user_id not in {context.user.id} and context.user.role not in MANAGER_ROLES:
-            raise HTTPException(status_code=403, detail="Assign the case before recording disposition")
+        if (
+            case.assigned_user_id not in {context.user.id}
+            and context.user.role not in MANAGER_ROLES
+        ):
+            raise HTTPException(
+                status_code=403,
+                detail="Assign the case before recording disposition",
+            )
         case.disposition = payload.disposition.strip() or None
         changes["disposition"] = case.disposition
 
