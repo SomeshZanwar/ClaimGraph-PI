@@ -42,6 +42,7 @@ Thumbs.db
 data/raw/*
 !data/raw/.gitkeep
 data/processed/
+data/generated/
 data/private/
 *.parquet
 *.feather
