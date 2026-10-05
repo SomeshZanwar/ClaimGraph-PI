@@ -21,6 +21,49 @@ import {
 function useDocumentTitle(title: string) {
   useEffect(() => {
     document.title = title;
+
+    const descriptions: Array<[string, string]> = [
+      ["Privacy", "How ClaimGraph PI handles account, session, analytics, and synthetic claims data."],
+      ["Terms", "Terms for using the ClaimGraph PI synthetic healthcare claims investigation demonstration."],
+      ["Support", "Support and bug-report guidance for ClaimGraph PI."],
+      ["Methodology", "How ClaimGraph PI builds deterministic, peer, anomaly, graph, and lineage evidence for human review."],
+      ["Queue", "Prioritized investigation cases generated from transparent claims risk signals."],
+      ["Provider", "Synthetic provider peer and network context for ClaimGraph PI investigations."],
+      ["Case", "Investigator case evidence, workflow status, notes, and source lineage in ClaimGraph PI."],
+    ];
+    const description =
+      descriptions.find(([key]) => title.includes(key))?.[1] ??
+      "ClaimGraph PI is an explainable pre-payment claims investigation and provider network intelligence platform.";
+
+    let descriptionMeta = document.querySelector('meta[name="description"]');
+    if (!descriptionMeta) {
+      descriptionMeta = document.createElement("meta");
+      descriptionMeta.setAttribute("name", "description");
+      document.head.appendChild(descriptionMeta);
+    }
+    descriptionMeta.setAttribute("content", description);
+
+    let canonical = document.querySelector('link[rel="canonical"]') as HTMLLinkElement | null;
+    if (!canonical) {
+      canonical = document.createElement("link");
+      canonical.rel = "canonical";
+      document.head.appendChild(canonical);
+    }
+    canonical.href = window.location.origin + window.location.pathname;
+
+    for (const [property, value] of [
+      ["og:title", title],
+      ["og:description", description],
+      ["og:url", canonical.href],
+    ]) {
+      let meta = document.querySelector('meta[property="' + property + '"]');
+      if (!meta) {
+        meta = document.createElement("meta");
+        meta.setAttribute("property", property);
+        document.head.appendChild(meta);
+      }
+      meta.setAttribute("content", value);
+    }
   }, [title]);
 }
 
