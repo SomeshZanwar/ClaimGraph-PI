@@ -3,9 +3,6 @@ from __future__ import annotations
 import subprocess
 from pathlib import Path
 
-from neo4j import GraphDatabase
-from sqlalchemy import select
-
 from app.casework.composer import compose_cases
 from app.config import get_settings
 from app.db.models import IngestionBatch
@@ -16,6 +13,8 @@ from app.ingestion.cms_carrier import ingest_carrier_zip, sha256_file
 from app.ml.claim_anomaly import train_and_score_claims
 from app.risk.engine import load_rule_definitions, run_rules
 from generate_demo_fixture import write_demo_zip
+from neo4j import GraphDatabase
+from sqlalchemy import select
 
 
 def run_dbt() -> None:
