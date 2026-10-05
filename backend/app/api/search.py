@@ -15,7 +15,7 @@ router = APIRouter(prefix="/api/v1/search", tags=["search"])
 
 @router.get("", response_model=SearchResponse)
 def search(
-    _context: Annotated[AuthContext, Depends(get_auth_context)],
+    context: Annotated[AuthContext, Depends(get_auth_context)],
     db: Annotated[Session, Depends(get_db)],
     q: str = Query(min_length=2, max_length=64),
 ) -> SearchResponse:
@@ -56,7 +56,13 @@ def search(
                     status as secondary,
                     3 as rank
                 from casework.cases
-                where id::text = :term or case_key = :term
+                where
+                    (id::text = :term or case_key = :term)
+                    and (
+                        :global_read
+                        or assigned_user_id is null
+                        or assigned_user_id = cast(:user_id as uuid)
+                    )
             )
             select type, id, label, secondary
             from matches
@@ -64,7 +70,11 @@ def search(
             limit 20
             """
         ),
-        {"term": term},
+        {
+            "term": term,
+            "global_read": context.user.role in {"MANAGER", "ADMIN", "AUDITOR"},
+            "user_id": str(context.user.id),
+        },
     ).mappings()
 
     return SearchResponse(
