@@ -40,9 +40,10 @@ def clear_case_auth_tables() -> None:
 def create_user_and_session(role: str = "INVESTIGATOR") -> tuple[User, str, str]:
     now = datetime.now(UTC)
     with SessionLocal() as session:
+        email = f"{uuid4().hex}@example.com"
         user = User(
-            email=f"{uuid4().hex}@example.com",
-            email_normalized=f"{uuid4().hex}@example.com",
+            email=email,
+            email_normalized=email.casefold(),
             password_hash=hash_password("SecurePasswordForApiTests123!"),
             role=role,
             is_active=True,
