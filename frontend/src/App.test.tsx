@@ -1,30 +1,56 @@
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { render, screen } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
-import { describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import App from "./App";
 
-describe("App", () => {
-  it("renders the product home page", () => {
-    render(
-      <MemoryRouter initialEntries={["/"]}>
+function renderApp(path: string) {
+  const client = new QueryClient({
+    defaultOptions: {
+      queries: { retry: false },
+    },
+  });
+
+  return render(
+    <QueryClientProvider client={client}>
+      <MemoryRouter initialEntries={[path]}>
         <App />
-      </MemoryRouter>,
+      </MemoryRouter>
+    </QueryClientProvider>,
+  );
+}
+
+describe("App", () => {
+  beforeEach(() => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockResolvedValue(
+        new Response(JSON.stringify({ detail: "Authentication required" }), {
+          status: 401,
+          headers: { "Content-Type": "application/json" },
+        }),
+      ),
     );
+  });
+
+  afterEach(() => {
+    vi.unstubAllGlobals();
+    localStorage.clear();
+  });
+
+  it("renders the public product home page", async () => {
+    renderApp("/");
 
     expect(
       screen.getByRole("heading", {
-        name: /claims investigation built around evidence/i,
+        name: /investigate suspicious claims with traceable evidence/i,
       }),
     ).toBeInTheDocument();
   });
 
-  it("renders a custom not found page", () => {
-    render(
-      <MemoryRouter initialEntries={["/missing-page"]}>
-        <App />
-      </MemoryRouter>,
-    );
+  it("renders a custom not found page", async () => {
+    renderApp("/missing-page");
 
     expect(
       screen.getByRole("heading", { name: /page not found/i }),
