@@ -131,6 +131,12 @@ jobs:
       - name: Build frontend
         run: npm run build
 
+      - name: Install Playwright browser
+        run: npx playwright install --with-deps chromium
+
+      - name: Run browser QA
+        run: npm run e2e
+
   security:
     name: Security
     runs-on: ubuntu-latest
