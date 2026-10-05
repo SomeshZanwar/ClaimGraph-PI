@@ -181,3 +181,18 @@ jobs:
             echo "Backend secret material marker found in frontend bundle"
             exit 1
           fi
+
+      - name: Validate development Compose configuration
+        run: docker compose -f docker-compose.yml config --quiet
+
+      - name: Validate production Compose configuration
+        env:
+          CLAIMGRAPH_DOMAIN: claimgraph.example.test
+          ACME_EMAIL: ci@example.test
+          POSTGRES_PASSWORD: ci-postgres-password
+          NEO4J_PASSWORD: ci-neo4j-password
+          REDIS_PASSWORD: ci-redis-password
+          SESSION_SECRET: ci-session-secret-with-more-than-32-characters
+          MAIL_HOST: smtp.example.test
+          MAIL_FROM: noreply@example.test
+        run: docker compose -f docker-compose.production.yml config --quiet
