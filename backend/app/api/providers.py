@@ -4,7 +4,7 @@ from decimal import Decimal
 from typing import Annotated
 
 from fastapi import APIRouter, Depends, HTTPException, status
-from sqlalchemy import func, select, text
+from sqlalchemy import select, text
 from sqlalchemy.orm import Session
 
 from app.api.schemas import ProviderProfileResponse
@@ -66,18 +66,18 @@ def get_provider_profile(
             )
         )
 
-    linked_case_count = db.scalar(
-        select(func.count())
-        .select_from(InvestigationCase)
-        .where(
-            InvestigationCase.claim_record_id.in_(
-                select(text("claim_record_id"))
-                .select_from(text("analytics.fact_claim_lines"))
-                .where(text("provider_npi = :provider_npi"))
-            )
-        )
-        .params(provider_npi=provider_npi)
-    ) or 0
+    linked_case_count = db.execute(
+        text(
+            """
+            select count(distinct c.id)
+            from casework.cases c
+            inner join analytics.fact_claim_lines l
+                on l.claim_record_id = c.claim_record_id
+            where l.provider_npi = :provider_npi
+            """
+        ),
+        {"provider_npi": provider_npi},
+    ).scalar_one()
 
     return ProviderProfileResponse(
         provider_npi=provider_npi,
