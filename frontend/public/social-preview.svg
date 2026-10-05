@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+  <title id="title">ClaimGraph PI</title>
+  <desc id="desc">Explainable claims investigation and provider network intelligence.</desc>
+  <rect width="1200" height="630" fill="#16191d"/>
+  <rect x="72" y="72" width="1056" height="486" fill="#1d2126" stroke="#343a40" stroke-width="2"/>
+  <text x="116" y="190" fill="#b5bac1" font-family="Arial, sans-serif" font-size="24" letter-spacing="3">HEALTHCARE PAYMENT INTEGRITY</text>
+  <text x="116" y="292" fill="#f2efe7" font-family="Arial, sans-serif" font-size="70" font-weight="700">ClaimGraph PI</text>
+  <text x="116" y="362" fill="#b5bac1" font-family="Arial, sans-serif" font-size="32">Explainable claims investigation</text>
+  <circle cx="894" cy="250" r="25" fill="#d97706"/>
+  <circle cx="1012" cy="214" r="19" fill="#f2efe7"/>
+  <circle cx="958" cy="352" r="21" fill="#657b86"/>
+  <circle cx="1060" cy="390" r="17" fill="#7b806a"/>
+  <path d="M918 244 L993 219 M907 270 L946 334 M977 337 L1050 380 M1022 232 L1055 373 M971 337 L1005 233" stroke="#596068" stroke-width="7" stroke-linecap="round"/>
+  <rect x="116" y="432" width="260" height="52" rx="3" fill="#d97706"/>
+  <text x="146" y="466" fill="#fff8ed" font-family="Arial, sans-serif" font-size="22" font-weight="700">Human review first</text>
+</svg>
