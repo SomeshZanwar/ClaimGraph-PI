@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from datetime import UTC, datetime
-from typing import Any
+from typing import Annotated, Any
 
 from fastapi import APIRouter, Depends, HTTPException, Request, status
 from pydantic import BaseModel, Field
@@ -36,7 +36,7 @@ class TelemetryEventRequest(BaseModel):
 def record_product_event(
     payload: TelemetryEventRequest,
     request: Request,
-    db: Session = Depends(get_db),
+    db: Annotated[Session, Depends(get_db)],
 ) -> dict[str, str]:
     if payload.event_name not in ALLOWED_EVENTS:
         raise HTTPException(status_code=422, detail="Unsupported telemetry event")
