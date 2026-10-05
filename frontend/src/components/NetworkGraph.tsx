@@ -40,7 +40,7 @@ export default function NetworkGraph({ data }: { data: GraphPayload }) {
             label: "data(label)",
             "font-size": 10,
             "text-wrap": "ellipsis",
-            "text-max-width": 86,
+            "text-max-width": "86px",
             "text-valign": "bottom",
             "text-margin-y": 7,
             width: 24,
