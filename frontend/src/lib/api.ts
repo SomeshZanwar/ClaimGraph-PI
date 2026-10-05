@@ -34,7 +34,7 @@ const API_BASE = import.meta.env.VITE_API_BASE_URL || "/api/v1";
 function csrfToken(): string | null {
   const pair = document.cookie
     .split("; ")
-    .find((item) => item.startsWith("claimgraph_csrf="));
+    .find((item) => item.startsWith("cg_csrf="));
   return pair ? decodeURIComponent(pair.split("=", 2)[1]) : null;
 }
 
