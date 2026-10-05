@@ -567,3 +567,23 @@ class AuditEvent(Base):
     metadata_json: Mapped[dict[str, object]] = mapped_column(JSONB, nullable=False)
     request_id: Mapped[str | None] = mapped_column(String(64), nullable=True)
     occurred_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
+
+
+class ProductEvent(Base):
+    __tablename__ = "product_events"
+    __table_args__ = (
+        Index("ix_telemetry_event_time", "event_name", "occurred_at"),
+        Index("ix_telemetry_route_time", "route", "occurred_at"),
+        {"schema": "telemetry"},
+    )
+
+    id: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True),
+        primary_key=True,
+        default=uuid.uuid4,
+    )
+    event_name: Mapped[str] = mapped_column(String(64), nullable=False)
+    route: Mapped[str] = mapped_column(String(256), nullable=False)
+    actor_hash: Mapped[str | None] = mapped_column(String(64), nullable=True)
+    properties: Mapped[dict[str, object]] = mapped_column(JSONB, nullable=False)
+    occurred_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
