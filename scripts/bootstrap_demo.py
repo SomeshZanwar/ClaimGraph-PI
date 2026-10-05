@@ -15,8 +15,6 @@ from app.risk.engine import load_rule_definitions, run_rules
 from generate_demo_fixture import write_demo_zip
 from neo4j import GraphDatabase
 from sqlalchemy import select
-from neo4j import GraphDatabase
-from sqlalchemy import select
 
 
 def run_dbt() -> None:
