@@ -307,6 +307,11 @@ The CI pipeline validates:
 - Python dependency audit
 - npm dependency audit
 - frontend bundle secret-marker checks
+- committed local documentation links
+- minimum backend coverage threshold
+- frontend JavaScript bundle budget
+- PostgreSQL, Neo4j, and Redis readiness
+- development and production Compose validation
 
 ## Production Deployment
 
