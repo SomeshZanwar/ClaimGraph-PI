@@ -319,14 +319,14 @@ Use metrics appropriate for highly imbalanced risk detection, such as:
 - centrality is not proof of fraud
 - network patterns must be presented as investigation signals
 
-## 12. AI Usage Boundaries
+## 12. Assisted Explanation Boundaries
 
-AI features are optional and subordinate to structured evidence.
+Optional generated explanations are subordinate to structured evidence.
 
 Allowed:
 
 - plain-language summarization of structured evidence
-- investigator-facing explanation of rule/model/graph signals
+- investigator-facing explanation of rule, model, and graph signals
 - documentation assistance inside the product if grounded in approved sources
 
 Not allowed:
@@ -338,7 +338,7 @@ Not allowed:
 - sending PHI, credentials, or secrets to external model providers
 - modifying risk evidence without an auditable deterministic source
 
-If an AI explanation is shown:
+If a generated explanation is shown:
 
 - the underlying evidence must be viewable
 - generated text must be labeled as an explanation, not primary evidence
@@ -527,8 +527,6 @@ CI must block merges on required test failures.
 - small, meaningful commits
 - descriptive commit messages
 - no giant one-shot implementation commit
-- no generated-by-AI language
-- no Copilot-agent authored commits
 - no secrets in history
 - no committed local environments
 - no generated large datasets
