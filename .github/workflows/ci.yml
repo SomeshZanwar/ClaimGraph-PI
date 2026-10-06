@@ -167,6 +167,9 @@ jobs:
       - name: Scan committed files for high-risk secret patterns
         run: python scripts/security_scan.py
 
+      - name: Check local documentation links
+        run: python scripts/check_markdown_links.py
+
       - name: Install backend for dependency audit
         run: |
           pip install -e "./backend"
