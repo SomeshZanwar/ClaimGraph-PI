@@ -68,3 +68,49 @@ test("public home page reaches interactive state quickly under local preview", a
 
   expect(timing).toBeLessThan(3000);
 });
+
+
+test("SEO support files are served from the built application", async ({ request }) => {
+  const robots = await request.get("/robots.txt");
+  expect(robots.ok()).toBeTruthy();
+  expect(await robots.text()).toContain("Sitemap:");
+
+  const sitemap = await request.get("/sitemap.xml");
+  expect(sitemap.ok()).toBeTruthy();
+  expect(await sitemap.text()).toContain("<urlset");
+
+  const llms = await request.get("/llms.txt");
+  expect(llms.ok()).toBeTruthy();
+  expect(await llms.text()).toContain("ClaimGraph PI");
+});
+
+test("public pages expose canonical and description metadata", async ({ page }) => {
+  await page.goto("/about");
+
+  const canonical = page.locator('link[rel="canonical"]');
+  await expect(canonical).toHaveAttribute("href", /\/about$/);
+
+  const description = page.locator('meta[name="description"]');
+  await expect(description).toHaveAttribute("content", /methodology|evidence|ClaimGraph/i);
+});
+
+test("mobile navigation opens and reaches support", async ({ page }, testInfo) => {
+  test.skip(!testInfo.project.name.includes("mobile"), "mobile-specific navigation QA");
+
+  await page.goto("/");
+  await page.getByRole("button", { name: "Menu" }).click();
+  await expect(page.getByRole("link", { name: "Support" })).toBeVisible();
+  await page.getByRole("link", { name: "Support" }).click();
+  await expect(page.getByRole("heading", { name: "Support and bug reports" })).toBeVisible();
+});
+
+test("analytics consent does not block public navigation", async ({ page }) => {
+  await page.goto("/");
+  const banner = page.getByRole("complementary", { name: "Analytics consent" });
+  await expect(banner).toBeVisible();
+  await banner.getByRole("button", { name: "Decline" }).click();
+  await expect(banner).toBeHidden();
+
+  await page.getByRole("link", { name: "Methodology" }).click();
+  await expect(page.getByRole("heading", { name: /How ClaimGraph PI constructs/ })).toBeVisible();
+});
