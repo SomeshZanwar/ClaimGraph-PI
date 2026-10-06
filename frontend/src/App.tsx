@@ -11,7 +11,6 @@ import {
 } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-import NetworkGraph from "./components/NetworkGraph";
 import { api, User } from "./lib/api";
 import {
   getAnalyticsConsent,
@@ -834,7 +833,9 @@ function ProviderPage() {
         {graph.isError ? <StatusMessage type="error">{graph.error.message}</StatusMessage> : null}
         {graph.data ? (
           <>
-            <NetworkGraph data={graph.data} />
+            <Suspense fallback={<LoadingState label="Preparing relationship graph" />}>
+              <NetworkGraph data={graph.data} />
+            </Suspense>
             {graph.data.truncated ? <StatusMessage type="info">The network view is bounded for safe interactive exploration.</StatusMessage> : null}
           </>
         ) : null}
