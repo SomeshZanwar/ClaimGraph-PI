@@ -112,8 +112,6 @@ test("analytics consent does not block public navigation", async ({ page }) => {
   await banner.getByRole("button", { name: "Decline" }).click();
   await expect(banner).toBeHidden();
 
-  await page.getByRole("navigation", { name: "Primary navigation" })
-    .getByRole("link", { name: "Methodology", exact: true })
-    .click();
+  await page.getByRole("link", { name: "Review methodology", exact: true }).click();
   await expect(page.getByRole("heading", { name: /How ClaimGraph PI constructs/ })).toBeVisible();
 });
