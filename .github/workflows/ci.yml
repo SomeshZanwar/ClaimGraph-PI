@@ -173,6 +173,9 @@ jobs:
       - name: Check local documentation links
         run: python scripts/check_markdown_links.py
 
+      - name: Run final repository QA
+        run: python scripts/final_repository_qa.py
+
       - name: Install backend for dependency audit
         run: |
           pip install -e "./backend"
