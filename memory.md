@@ -39,9 +39,9 @@ Complete and maintained:
 
 ## Current Overall Status
 
-Repository implementation: RELEASE CANDIDATE
+Repository implementation: COMPLETE AND RELEASE-READY
 
-Latest fully completed CI before the current documentation/reproducibility cleanup: GREEN
+Latest full CI on the release-ready documentation state: GREEN
 
 Validated CI jobs:
 
@@ -90,9 +90,12 @@ Status: COMPLETE
 - custom 404
 - local setup documentation
 
-Remaining release reproducibility cleanup:
+Release reproducibility:
 
-- commit resolved frontend package-lock.json generated from CI
+- frontend package-lock.json is committed
+- CI and frontend container installs use npm ci
+- backend coverage floor is enforced
+- frontend JavaScript bundle budget is enforced
 
 ### Phase 2: Data Source, Canonical Model, and Ingestion
 
@@ -410,7 +413,7 @@ A live-demo link will be added only after a real deployment exists.
 
 ### Phase 18: Final QA
 
-Status: IN PROGRESS
+Status: COMPLETE AT REPOSITORY LEVEL
 
 Completed:
 
@@ -429,12 +432,19 @@ Completed:
 - public internal footer routes verified by browser QA
 - no page-level horizontal overflow in tested public and protected routes
 
-Remaining:
+Final QA also includes:
 
-- commit resolved frontend package lockfile
-- rerun complete CI after final documentation/reproducibility changes
-- final memory/documentation consistency pass
-- external deployment actions, if a real hosted demo is required before declaring the project fully launched
+- committed frontend lockfile and npm ci reproducibility
+- backend coverage floor
+- frontend bundle-size budget
+- dependency-aware readiness for PostgreSQL, Neo4j, and Redis
+- production configuration validation that rejects unsafe production secrets/HTTP origins
+- local Markdown-link validation
+- SEO support-file browser checks
+- analytics-consent browser checks
+- viewport-independent mobile navigation tests
+
+External hosting, live TLS/SMTP validation, search-engine submission, and a public demo URL remain launch-environment actions. They are not represented as completed inside the repository.
 
 ## Important Engineering Decisions
 
@@ -474,12 +484,26 @@ The UI follows the project design rules and avoids generic marketing-template pa
 
 ## Current Work
 
-Final reproducibility and release-candidate QA.
+Repository implementation and final QA are complete. No further project code work is pending before external deployment.
 
 ## Last Updated
 
 2026-10-06
 
+## Latest Validation
+
+GitHub Actions run 282 completed successfully on 2026-10-06.
+
+Validated jobs:
+
+- Backend and Analytics: PASS
+- Frontend: PASS
+- Security: PASS
+
+Validated release checks include migrations, backend tests and coverage floor, dbt, deterministic rules, Neo4j projection, network analytics, anomaly scoring, evidence/case composition, dependency readiness, frontend lint/unit/build, bundle budget, desktop/mobile Playwright QA, secret scanning, dependency audits, documentation links, frontend secret-marker scanning, and development/production Compose validation.
+
 ## Next Action
 
-Commit the CI-resolved frontend package lockfile, run the complete CI suite again, reconcile any remaining documentation inconsistencies, and then determine whether an external live deployment is required before final project sign-off.
+Keep ClaimGraph PI unchanged except for future deployment-specific configuration or bug fixes. External live deployment remains optional and must be performed with real hosting/domain/SMTP access.
+
+Do not begin Project 2 until the user explicitly approves moving forward.
