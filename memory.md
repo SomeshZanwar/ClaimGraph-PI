@@ -299,13 +299,6 @@ As applicable:
 - contact/support
 - bug report
 
-## Repository Provenance Rule
-
-The repository must not include unnecessary AI branding, generated-by-AI language, Copilot-agent attribution, or fake development history.
-
-Development should proceed incrementally with meaningful commits.
-
-No false authorship claims should be added.
 
 ## Last Updated
 
