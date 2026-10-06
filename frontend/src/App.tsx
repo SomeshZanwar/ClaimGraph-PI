@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { lazy, Suspense, useEffect, useMemo, useState } from "react";
 import {
   Link,
   Navigate,
@@ -12,6 +12,8 @@ import {
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import { api, User } from "./lib/api";
+
+const NetworkGraph = lazy(() => import("./components/NetworkGraph"));
 import {
   getAnalyticsConsent,
   setAnalyticsConsent,
