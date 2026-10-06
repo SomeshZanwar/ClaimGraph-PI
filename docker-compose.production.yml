@@ -22,7 +22,6 @@ services:
       args:
         VITE_API_BASE_URL: /api/v1
         PUBLIC_BASE_URL: https://${CLAIMGRAPH_DOMAIN:?Set CLAIMGRAPH_DOMAIN}
-        PUBLIC_BASE_URL: https://${CLAIMGRAPH_DOMAIN:?Set CLAIMGRAPH_DOMAIN}
     restart: unless-stopped
     expose:
       - "80"
