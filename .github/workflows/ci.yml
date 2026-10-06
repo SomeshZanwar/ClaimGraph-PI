@@ -77,7 +77,7 @@ jobs:
         run: alembic -c backend/alembic.ini upgrade head
 
       - name: Test backend
-        run: pytest backend --cov=backend/app --cov-report=term-missing
+        run: pytest backend --cov=backend/app --cov-report=term-missing --cov-fail-under=65
 
       - name: Load analytics fixture
         run: python scripts/load_dbt_fixture.py
