@@ -1,6 +1,6 @@
 from functools import lru_cache
 
-from pydantic import Field
+from pydantic import Field, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -49,6 +49,36 @@ class Settings(BaseSettings):
     otel_enabled: bool = Field(default=False)
     mlflow_tracking_uri: str = Field(default="sqlite:///mlflow.db")
     model_artifact_dir: str = Field(default="artifacts/models")
+
+    @model_validator(mode="after")
+    def validate_production_security(self) -> "Settings":
+        if self.app_env.lower() != "production":
+            return self
+
+        errors: list[str] = []
+
+        if not self.frontend_origin.startswith("https://"):
+            errors.append("FRONTEND_ORIGIN must use HTTPS in production")
+        if not self.frontend_base_url.startswith("https://"):
+            errors.append("FRONTEND_BASE_URL must use HTTPS in production")
+        if len(self.session_secret) < 32 or self.session_secret == "development-only-change-me":
+            errors.append("SESSION_SECRET must be at least 32 non-default characters")
+        if "change-me" in self.database_url:
+            errors.append("DATABASE_URL must not use development credentials")
+        if self.neo4j_password == "change-me":
+            errors.append("NEO4J_PASSWORD must not use the development placeholder")
+        if "@" not in self.redis_url:
+            errors.append("REDIS_URL must include authentication in production")
+        if self.email_delivery_mode.lower() == "smtp":
+            if self.mail_host in {"localhost", "mailpit"}:
+                errors.append("MAIL_HOST must reference a production SMTP service")
+            if not self.mail_use_tls:
+                errors.append("MAIL_USE_TLS must be enabled for production SMTP")
+
+        if errors:
+            raise ValueError("; ".join(errors))
+
+        return self
 
 
 @lru_cache
