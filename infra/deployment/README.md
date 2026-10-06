@@ -74,6 +74,8 @@ curl -fsS https://YOUR_DOMAIN/api/v1/health
 curl -fsS https://YOUR_DOMAIN/ready
 ~~~
 
+The readiness response should report `database`, `neo4j`, and `redis` as `ok`. A failed dependency returns HTTP 503 rather than advertising the service as ready.
+
 Also verify:
 
 - signup delivers a real verification email
