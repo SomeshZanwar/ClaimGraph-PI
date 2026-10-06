@@ -5,7 +5,7 @@
 Public application health:
 
 - `/api/v1/health`: API process health
-- `/ready`: readiness endpoint used by the production container health check
+- `/ready`: dependency-aware readiness endpoint used by the production container health check; returns ready only when PostgreSQL, Neo4j, and Redis are reachable
 - `/metrics`: Prometheus metrics, intentionally blocked from the public Caddy route
 
 ## Primary Metrics
