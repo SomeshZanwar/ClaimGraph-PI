@@ -99,8 +99,9 @@ test("mobile navigation opens and reaches support", async ({ page }, testInfo) =
 
   await page.goto("/");
   await page.getByRole("button", { name: "Menu" }).click();
-  await expect(page.getByRole("link", { name: "Support" })).toBeVisible();
-  await page.getByRole("link", { name: "Support" }).click();
+  const primaryNavigation = page.getByRole("navigation", { name: "Primary navigation" });
+  await expect(primaryNavigation.getByRole("link", { name: "Support" })).toBeVisible();
+  await primaryNavigation.getByRole("link", { name: "Support" }).click();
   await expect(page.getByRole("heading", { name: "Support and bug reports" })).toBeVisible();
 });
 
@@ -111,6 +112,8 @@ test("analytics consent does not block public navigation", async ({ page }) => {
   await banner.getByRole("button", { name: "Decline" }).click();
   await expect(banner).toBeHidden();
 
-  await page.getByRole("link", { name: "Methodology" }).click();
+  await page.getByRole("navigation", { name: "Primary navigation" })
+    .getByRole("link", { name: "Methodology", exact: true })
+    .click();
   await expect(page.getByRole("heading", { name: /How ClaimGraph PI constructs/ })).toBeVisible();
 });
