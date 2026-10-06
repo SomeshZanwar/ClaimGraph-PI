@@ -33,7 +33,7 @@ TEXT_SUFFIXES = {
 }
 PATTERNS = {
     "private key": re.compile(r"-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----"),
-    "OpenAI-style API key": re.compile(r"\bsk-[A-Za-z0-9_-]{20,}\b"),
+    "common sk-prefixed API key": re.compile(r"\bsk-[A-Za-z0-9_-]{20,}\b"),
     "GitHub personal access token": re.compile(r"\b(?:ghp_|github_pat_)[A-Za-z0-9_]{20,}\b"),
     "AWS access key": re.compile(r"\bAKIA[A-Z0-9]{16}\b"),
     "Slack token": re.compile(r"\bxox[baprs]-[A-Za-z0-9-]{20,}\b"),
