@@ -4,7 +4,7 @@ import re
 import time
 import uuid
 
-from fastapi import FastAPI, Request, Response
+from fastapi import FastAPI, Request, Response, status
 from fastapi.middleware.cors import CORSMiddleware
 from prometheus_client import CONTENT_TYPE_LATEST, generate_latest
 
@@ -17,6 +17,7 @@ from app.api.telemetry import router as telemetry_router
 from app.auth.routes import router as auth_router
 from app.config import get_settings
 from app.observability import REQUEST_COUNT, REQUEST_LATENCY, configure_logging, logger
+from app.readiness import check_dependencies
 
 settings = get_settings()
 configure_logging(settings.log_level)
@@ -114,5 +115,13 @@ def metrics() -> Response:
 
 
 @app.get("/ready", tags=["system"])
-def readiness() -> dict[str, str]:
-    return {"status": "ready", "service": "claimgraph-pi-api"}
+def readiness(response: Response) -> dict[str, object]:
+    dependencies = check_dependencies()
+    if not dependencies.ready:
+        response.status_code = status.HTTP_503_SERVICE_UNAVAILABLE
+
+    return {
+        "status": "ready" if dependencies.ready else "not_ready",
+        "service": "claimgraph-pi-api",
+        "dependencies": dependencies.as_dict(),
+    }
