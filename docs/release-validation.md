@@ -16,7 +16,7 @@ The complete pipeline includes migrations, backend tests and coverage enforcemen
 - Added zero-violation axe assertions for WCAG 2.1 A/AA on public routes, 404, consent and mobile navigation states, and protected queue, case evidence, and provider network flows. The existing desktop/mobile projects run these assertions without rule exclusions.
 - Corrected primary-action text contrast by darkening normal and hover backgrounds, and gave the labeled provider graph a valid image role. The design specification reflects the updated action colors.
 - Browser QA passed 29 tests, with one intentional skip of the mobile-only navigation test in the desktop project. Frontend unit tests passed 2 tests.
-- Run 286 failed because the lockfile did not match the axe manifest addition. Run 287 then exposed contrast and graph-role violations. Run 288 passed after those defects were corrected.
+- Run 286 failed because the lockfile did not match the axe manifest addition. Run 287 then exposed contrast and graph-role violations. Run 288 passed after those defects were corrected. Run 289 validated the final PR state, and post-merge run 290 passed on `main`.
 
 Protected browser flows use public-safe mocked API fixtures. Axe checks do not replace keyboard, zoom, assistive-technology, or deployed-environment review. Local Windows browser checks could not complete because loopback connections to the preview listener timed out; successful browser evidence above comes from Linux GitHub Actions.
 
