@@ -46,7 +46,7 @@ This file separates repository readiness from external launch actions. Do not ma
 ## Accessibility
 
 - [ ] keyboard-test all public and investigator navigation
-- [ ] run automated WCAG checks
+- [ ] rerun automated WCAG checks against the deployed domain (repository Playwright checks use local preview and public-safe API fixtures)
 - [ ] verify visible focus states
 - [ ] verify contrast in the deployed environment
 - [ ] test browser zoom to 200%

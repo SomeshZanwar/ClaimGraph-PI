@@ -303,6 +303,7 @@ The CI pipeline validates:
 - evidence/case composition
 - frontend lint/unit/build
 - desktop and mobile browser QA
+- axe WCAG 2.1 A/AA assertions on public pages, navigation/consent states, and protected queue, case, and provider pages
 - secret-pattern scanning
 - Python dependency audit
 - npm dependency audit
@@ -312,6 +313,8 @@ The CI pipeline validates:
 - frontend JavaScript bundle budget
 - PostgreSQL, Neo4j, and Redis readiness
 - development and production Compose validation
+
+Automated accessibility checks assert zero axe violations without rule exclusions. They use public-safe API fixtures for investigator pages and do not replace deployed keyboard, zoom, or assistive-technology review. See [release validation](docs/release-validation.md) for the verified release run and [launch checklist](docs/launch-checklist.md) for remaining external checks.
 
 ## Production Deployment
 

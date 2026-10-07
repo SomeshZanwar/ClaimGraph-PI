@@ -582,6 +582,7 @@ A reviewer can understand the product, architecture, evidence, tradeoffs, and li
 - favicon works
 - sitemap/robots valid
 - all required tests green
+- automated axe WCAG 2.1 A/AA assertions pass on desktop and mobile public/protected flows
 - CI green
 - no secrets
 - no fake claims

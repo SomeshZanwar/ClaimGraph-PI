@@ -1,4 +1,5 @@
 import { expect, test } from "@playwright/test";
+import { expectAccessible } from "./accessibility";
 
 const PUBLIC_ROUTES = ["/", "/about", "/privacy", "/terms", "/support"];
 
@@ -31,6 +32,7 @@ for (const route of PUBLIC_ROUTES) {
     }));
 
     expect(overflow.document).toBeLessThanOrEqual(overflow.viewport + 1);
+    await expectAccessible(page);
   });
 }
 
@@ -40,6 +42,7 @@ test("custom 404 provides a working return path", async ({ page }) => {
 
   const returnLink = page.getByRole("link", { name: "Return home" });
   await expect(returnLink).toHaveAttribute("href", "/");
+  await expectAccessible(page);
 });
 
 test("public internal footer links resolve", async ({ page }) => {
@@ -101,8 +104,10 @@ test("mobile navigation opens and reaches support", async ({ page }, testInfo) =
   await page.getByRole("button", { name: "Menu" }).click();
   const primaryNavigation = page.getByRole("navigation", { name: "Primary navigation" });
   await expect(primaryNavigation.getByRole("link", { name: "Support" })).toBeVisible();
+  await expectAccessible(page);
   await primaryNavigation.getByRole("link", { name: "Support" }).click();
   await expect(page.getByRole("heading", { name: "Support and bug reports" })).toBeVisible();
+  await expectAccessible(page);
 });
 
 test("analytics consent does not block public navigation", async ({ page }) => {
@@ -111,6 +116,7 @@ test("analytics consent does not block public navigation", async ({ page }) => {
   await expect(banner).toBeVisible();
   await banner.getByRole("button", { name: "Decline" }).click();
   await expect(banner).toBeHidden();
+  await expectAccessible(page);
 
   await page.getByRole("link", { name: "Review methodology", exact: true }).click();
   await expect(page.getByRole("heading", { name: /How ClaimGraph PI constructs/ })).toBeVisible();
