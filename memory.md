@@ -41,7 +41,7 @@ Complete and maintained:
 
 Repository implementation: COMPLETE AND RELEASE-READY
 
-Latest full CI on the release-ready documentation state: GREEN
+Release implementation validation: GREEN, [CI run 288](https://github.com/SomeshZanwar/ClaimGraph-PI/actions/runs/37570827101), including automated axe accessibility assertions. The documentation reconciliation is tracked in [PR 12](https://github.com/SomeshZanwar/ClaimGraph-PI/pull/12).
 
 Validated CI jobs:
 
@@ -303,6 +303,8 @@ Status: COMPLETE AT REPOSITORY LEVEL
 - responsive layout
 - keyboard-visible focus states
 - non-color-only risk labels
+- automated axe WCAG 2.1 A/AA assertions on desktop/mobile public and protected flows
+- accessible primary-action contrast and provider-graph semantics
 
 External search-engine submission remains a post-deployment action and is documented rather than falsely marked complete.
 
@@ -484,7 +486,7 @@ The UI follows the project design rules and avoids generic marketing-template pa
 
 ## Current Work
 
-Repository implementation and final QA are complete. No further project code work is pending before external deployment.
+The accessibility and dependency-lock release pass is complete on the PR 12 branch. The frontend lockfile was regenerated and clean installs pass. Axe assertions found primary-action contrast and graph-role violations; both were fixed without excluding rules. Full CI run 288 passed. Release records now reflect this validated implementation; the documentation commit receives its own CI validation on the PR.
 
 ## Last Updated
 
@@ -492,7 +494,7 @@ Repository implementation and final QA are complete. No further project code wor
 
 ## Latest Validation
 
-GitHub Actions run 282 completed successfully on 2026-10-06.
+GitHub Actions [run 288](https://github.com/SomeshZanwar/ClaimGraph-PI/actions/runs/37570827101) completed successfully on 2026-10-06 (America/Chicago; 2026-10-07 UTC), validating branch commit `34f6502eddfc4a4a9fb49f6f97842cf40161d730` through the PR merge checkout.
 
 Validated jobs:
 
@@ -500,10 +502,10 @@ Validated jobs:
 - Frontend: PASS
 - Security: PASS
 
-Validated release checks include migrations, backend tests and coverage floor, dbt, deterministic rules, Neo4j projection, network analytics, anomaly scoring, evidence/case composition, dependency readiness, frontend lint/unit/build, bundle budget, desktop/mobile Playwright QA, secret scanning, dependency audits, documentation links, frontend secret-marker scanning, and development/production Compose validation.
+Validated release checks include migrations, backend tests and coverage floor, dbt, deterministic rules, Neo4j projection, network analytics, anomaly scoring, evidence/case composition, dependency readiness, frontend lint/unit/build, bundle budget, desktop/mobile Playwright QA with axe WCAG 2.1 A/AA assertions, secret scanning, dependency audits, documentation links, frontend secret-marker scanning, and development/production Compose validation. Browser QA: 29 passed, 1 intentional desktop skip for the mobile-only navigation test. Automated accessibility checks are fixture-based and do not establish complete WCAG conformance.
 
 ## Next Action
 
-Keep ClaimGraph PI unchanged except for future deployment-specific configuration or bug fixes. External live deployment remains optional and must be performed with real hosting/domain/SMTP access.
+Review the accessibility release changes in PR 12. External live deployment remains optional and requires real hosting/domain/SMTP access. See docs/release-validation.md for release evidence and docs/launch-checklist.md for external launch actions.
 
 Do not begin Project 2 until the user explicitly approves moving forward.
