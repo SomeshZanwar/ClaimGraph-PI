@@ -37,8 +37,8 @@ Avoid pure white and pure black as dominant backgrounds.
 
 Single CTA color:
 
-- CTA: #D97706
-- CTA hover: #B85F05
+- CTA: #A65304
+- CTA hover: #884303
 - CTA text: #FFF8ED
 
 No other high-saturation color should compete with the CTA.

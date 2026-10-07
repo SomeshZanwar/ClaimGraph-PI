@@ -90,5 +90,5 @@ export default function NetworkGraph({ data }: { data: GraphPayload }) {
     return () => instance.destroy();
   }, [data]);
 
-  return <div ref={ref} className="network-canvas" aria-label="Provider relationship graph" />;
+  return <div ref={ref} className="network-canvas" role="img" aria-label="Provider relationship graph" />;
 }
