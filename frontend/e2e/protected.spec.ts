@@ -1,4 +1,5 @@
 import { expect, test } from "@playwright/test";
+import { expectAccessible } from "./accessibility";
 
 const caseId = "11111111-1111-1111-1111-111111111111";
 const providerId = "DEMO_NPI_0001";
@@ -152,6 +153,7 @@ async function expectNoPageOverflow(page: import("@playwright/test").Page) {
     document: document.documentElement.scrollWidth,
   }));
   expect(overflow.document).toBeLessThanOrEqual(overflow.viewport + 1);
+  await expectAccessible(page);
 }
 
 test("investigation queue is usable without page overflow", async ({ page }) => {
