@@ -41,7 +41,7 @@ Complete and maintained:
 
 Repository implementation: COMPLETE AND RELEASE-READY
 
-Release implementation validation: GREEN, [CI run 288](https://github.com/SomeshZanwar/ClaimGraph-PI/actions/runs/37570827101), including automated axe accessibility assertions. The documentation reconciliation is tracked in [PR 12](https://github.com/SomeshZanwar/ClaimGraph-PI/pull/12).
+Final post-merge validation: GREEN on `main`, [CI run 290](https://github.com/SomeshZanwar/ClaimGraph-PI/actions/runs/37571601238), commit `97abbbe798f8381335cdb781358688db8e604f31`, including automated axe accessibility assertions.
 
 Validated CI jobs:
 
@@ -486,7 +486,7 @@ The UI follows the project design rules and avoids generic marketing-template pa
 
 ## Current Work
 
-The accessibility and dependency-lock release pass is complete on the PR 12 branch. The frontend lockfile was regenerated and clean installs pass. Axe assertions found primary-action contrast and graph-role violations; both were fixed without excluding rules. Full CI run 288 passed. Release records now reflect this validated implementation; the documentation commit receives its own CI validation on the PR.
+ClaimGraph PI repository implementation is complete and release-ready on `main`. PR 12 was squash-merged as commit `97abbbe798f8381335cdb781358688db8e604f31`, and the post-merge full CI run 290 passed Backend and Analytics, Frontend, and Security. No further repository code work is pending before optional external deployment.
 
 ## Last Updated
 
@@ -494,7 +494,7 @@ The accessibility and dependency-lock release pass is complete on the PR 12 bran
 
 ## Latest Validation
 
-GitHub Actions [run 288](https://github.com/SomeshZanwar/ClaimGraph-PI/actions/runs/37570827101) completed successfully on 2026-10-06 (America/Chicago; 2026-10-07 UTC), validating branch commit `34f6502eddfc4a4a9fb49f6f97842cf40161d730` through the PR merge checkout.
+GitHub Actions [run 290](https://github.com/SomeshZanwar/ClaimGraph-PI/actions/runs/37571601238) completed successfully on `main` after PR 12 was merged, validating commit `97abbbe798f8381335cdb781358688db8e604f31`.
 
 Validated jobs:
 
@@ -502,10 +502,10 @@ Validated jobs:
 - Frontend: PASS
 - Security: PASS
 
-Validated release checks include migrations, backend tests and coverage floor, dbt, deterministic rules, Neo4j projection, network analytics, anomaly scoring, evidence/case composition, dependency readiness, frontend lint/unit/build, bundle budget, desktop/mobile Playwright QA with axe WCAG 2.1 A/AA assertions, secret scanning, dependency audits, documentation links, frontend secret-marker scanning, and development/production Compose validation. Browser QA: 29 passed, 1 intentional desktop skip for the mobile-only navigation test. Automated accessibility checks are fixture-based and do not establish complete WCAG conformance.
+Validated release checks include migrations, backend tests and coverage floor, dbt, deterministic rules, Neo4j projection, network analytics, anomaly scoring, evidence/case composition, dependency readiness, frontend lint/unit/build, bundle budget, desktop/mobile Playwright QA with axe WCAG 2.1 A/AA assertions, secret scanning, dependency audits, documentation links, frontend secret-marker scanning, repository QA, and development/production Compose validation. Browser QA remains 29 passed with 1 intentional desktop skip for the mobile-only navigation test. Automated accessibility checks are fixture-based and do not establish complete WCAG conformance.
 
 ## Next Action
 
-Review the accessibility release changes in PR 12. External live deployment remains optional and requires real hosting/domain/SMTP access. See docs/release-validation.md for release evidence and docs/launch-checklist.md for external launch actions.
+Keep ClaimGraph PI closed except for future deployment-specific configuration or bug fixes. External live deployment remains optional and requires real hosting/domain/SMTP access. See docs/release-validation.md for final release evidence and docs/launch-checklist.md for external launch actions.
 
 Do not begin Project 2 until the user explicitly approves moving forward.
